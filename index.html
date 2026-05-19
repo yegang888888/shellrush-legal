@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShellRush — Privacy Policy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Serif+JP:wght@400;700&family=Noto+Serif+KR:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161e;
+      --border: #1e2433;
+      --accent: #e8c14a;
+      --accent2: #4ac8e8;
+      --text: #d4d8e8;
+      --muted: #6b7394;
+      --heading: #f0f2ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      line-height: 1.9;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,193,74,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,193,74,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    html[dir="rtl"] .page { direction: rtl; font-family: 'Noto Naskh Arabic', serif; }
+    html[dir="rtl"] ul li { padding: 7px 20px 7px 0; }
+    html[dir="rtl"] ul li::before { left: auto; right: 0; }
+    html[dir="rtl"] h2 { flex-direction: row-reverse; }
+    html[dir="rtl"] .highlight-box { border-left: 1px solid rgba(74,200,232,0.2); border-right: 3px solid var(--accent2); }
+    html[dir="rtl"] .warn-box { border-left: 1px solid rgba(232,193,74,0.2); border-right: 3px solid var(--accent); }
+    html[dir="rtl"] .toc { border-left: 1px solid var(--border); border-right: 3px solid var(--accent2); }
+
+    .lang-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,15,20,0.96);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 32px;
+      display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+      backdrop-filter: blur(8px);
+    }
+    .lang-bar span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; color: var(--muted); letter-spacing: 2px;
+      margin-right: 8px; text-transform: uppercase;
+    }
+    .lang-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); font-size: 12px;
+      padding: 4px 12px; cursor: pointer;
+      transition: all 0.2s; font-family: inherit; border-radius: 2px;
+    }
+    .lang-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+    .lang-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(232,193,74,0.07); }
+
+    .page {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 60px 32px 80px;
+    }
+    .lang-content { display: none; }
+    .lang-content.active { display: block; }
+
+    header {
+      text-align: center; margin-bottom: 56px;
+      padding-bottom: 36px; border-bottom: 1px solid var(--border);
+    }
+    .game-badge {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--accent);
+      letter-spacing: 3px; text-transform: uppercase;
+      border: 1px solid var(--accent);
+      padding: 4px 14px; margin-bottom: 20px; position: relative;
+    }
+    .game-badge::before, .game-badge::after {
+      content: '◆'; position: absolute; top: 50%;
+      transform: translateY(-50%); font-size: 6px;
+    }
+    .game-badge::before { left: -10px; }
+    .game-badge::after { right: -10px; }
+    h1.title {
+      font-size: clamp(26px, 5vw, 40px); font-weight: 700;
+      color: var(--heading); letter-spacing: 1px;
+      line-height: 1.25; margin-bottom: 12px;
+    }
+    h1.title span { color: var(--accent); }
+    .effective-date {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; color: var(--muted); letter-spacing: 1px;
+    }
+
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      padding: 22px 26px; margin-bottom: 52px;
+    }
+    .toc-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--accent2);
+      letter-spacing: 2px; margin-bottom: 14px; text-transform: uppercase;
+    }
+    .toc ol { list-style: none; }
+    .toc ol li { padding: 3px 0; }
+    .toc ol li a {
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; transition: color 0.2s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toc ol li a:hover { color: var(--heading); }
+
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 17px; font-weight: 700; color: var(--heading);
+      margin-bottom: 18px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--accent);
+      background: rgba(232,193,74,0.08);
+      border: 1px solid rgba(232,193,74,0.25);
+      padding: 2px 8px; white-space: nowrap;
+    }
+    h3 {
+      font-size: 13px; font-weight: 600; color: var(--accent2);
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1px; margin: 22px 0 10px; text-transform: uppercase;
+    }
+    p { margin-bottom: 12px; color: var(--text); }
+    ul { list-style: none; margin: 8px 0 12px; }
+    ul li {
+      padding: 7px 0 7px 20px; position: relative;
+      border-bottom: 1px solid rgba(30,36,51,0.6); font-size: 14px;
+    }
+    ul li::before {
+      content: '▸'; position: absolute; left: 0;
+      color: var(--accent); font-size: 10px; top: 10px;
+    }
+    ul li strong { color: var(--heading); }
+
+    .highlight-box {
+      background: rgba(74,200,232,0.05);
+      border: 1px solid rgba(74,200,232,0.2);
+      border-left: 3px solid var(--accent2);
+      padding: 14px 18px; margin: 14px 0;
+      font-size: 14px; color: #a8c8d8;
+    }
+    .warn-box {
+      background: rgba(232,193,74,0.05);
+      border: 1px solid rgba(232,193,74,0.2);
+      border-left: 3px solid var(--accent);
+      padding: 14px 18px; margin: 14px 0;
+      font-size: 14px; color: #c8b878;
+    }
+    footer {
+      margin-top: 60px; padding-top: 26px;
+      border-top: 1px solid var(--border); text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 20px; color: var(--accent); letter-spacing: 4px; margin-bottom: 8px;
+    }
+    .footer-text { font-size: 12px; color: var(--muted); font-family: 'Share Tech Mono', monospace; }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      .page { padding: 40px 18px 60px; }
+      .lang-bar { padding: 8px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <span>Lang //</span>
+  <button class="lang-btn active" onclick="switchLang('zh','ltr','zh-CN',this)">中文</button>
+  <button class="lang-btn" onclick="switchLang('en','ltr','en',this)">English</button>
+  <button class="lang-btn" onclick="switchLang('ja','ltr','ja',this)">日本語</button>
+  <button class="lang-btn" onclick="switchLang('ko','ltr','ko',this)">한국어</button>
+  <button class="lang-btn" onclick="switchLang('ar','rtl','ar',this)">العربية</button>
+  <button class="lang-btn" onclick="switchLang('es','ltr','es',this)">Español</button>
+</div>
+
+<div class="page">
+
+<!-- ══════════ 中文 ══════════ -->
+<div class="lang-content active" id="lang-zh">
+  <header>
+    <div class="game-badge">Privacy Policy</div>
+    <h1 class="title"><span>ShellRush</span> 隐私政策</h1>
+    <p class="effective-date">生效日期：2026年5月17日</p>
+  </header>
+  <div class="toc">
+    <div class="toc-title">// 目录</div>
+    <ol>
+      <li><a href="#">一、我们收集的信息</a></li>
+      <li><a href="#">二、我们如何使用信息</a></li>
+      <li><a href="#">三、信息的共享与披露</a></li>
+      <li><a href="#">四、数据存储与安全</a></li>
+      <li><a href="#">五、儿童隐私保护</a></li>
+      <li><a href="#">六、您的权利</a></li>
+      <li><a href="#">七、广告与个性化</a></li>
+      <li><a href="#">八、本政策的变更</a></li>
+      <li><a href="#">九、联系我们</a></li>
+    </ol>
+  </div>
+  <div class="highlight-box">感谢您选择 ShellRush。本隐私政策旨在向您说明我们如何收集、使用、存储和保护您的个人信息。请在使用本游戏前仔细阅读本政策。使用本游戏即表示您同意本隐私政策的内容。如您不同意，请停止使用本游戏。</div>
+  <section>
+    <h2><span class="num">一</span>我们收集的信息</h2>
+    <h3>1.1 您主动提供的信息</h3>
+    <ul>
+      <li><strong>账户注册信息：</strong>昵称、头像等游戏内资料（如需注册）</li>
+      <li><strong>客服联系信息：</strong>您联系客服时提供的邮箱地址或其他联系方式</li>
+      <li><strong>用户反馈内容：</strong>您通过反馈功能提交的文字或截图</li>
+    </ul>
+    <h3>1.2 我们自动收集的信息</h3>
+    <ul>
+      <li><strong>设备信息：</strong>设备型号、操作系统版本、设备标识符（如广告 ID）</li>
+      <li><strong>游戏行为数据：</strong>游戏进度、关卡数据、得分记录、游戏时长</li>
+      <li><strong>日志信息：</strong>崩溃报告、错误日志、性能数据</li>
+      <li><strong>网络信息：</strong>IP 地址、网络类型（Wi-Fi / 移动数据）</li>
+    </ul>
+    <h3>1.3 我们不收集的信息</h3>
+    <div class="warn-box">本游戏<strong>不收集</strong>您的真实姓名、身份证号、银行卡信息、精确地理位置或通讯录。</div>
+  </section>
+  <section>
+    <h2><span class="num">二</span>我们如何使用信息</h2>
+    <ul>
+      <li>提供、维护和改善游戏功能与用户体验</li>
+      <li>保存游戏进度，实现云存档功能（如适用）</li>
+      <li>分析游戏数据，优化关卡设计和平衡性</li>
+      <li>检测和修复技术故障、防范作弊行为</li>
+      <li>处理您的客服请求和反馈</li>
+      <li>向您发送游戏相关的更新通知（可关闭）</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">三</span>信息的共享与披露</h2>
+    <p>我们不会出售您的个人信息。仅在以下情形下可能共享：</p>
+    <ul>
+      <li><strong>服务提供商：</strong>与协助运营游戏的第三方服务商共享，仅限合同约定目的</li>
+      <li><strong>法律要求：</strong>依据法律法规或司法、行政机关的要求披露</li>
+      <li><strong>安全保护：</strong>为保护本游戏、用户或公众的合法权益</li>
+    </ul>
+    <h3>3.1 第三方 SDK 说明</h3>
+    <ul>
+      <li><strong>广告 SDK</strong>（如 AdMob、Unity Ads）：用于展示广告，可能收集广告标识符</li>
+      <li><strong>数据分析 SDK</strong>（如 Firebase Analytics）：用于统计游戏数据</li>
+      <li><strong>崩溃分析 SDK</strong>（如 Crashlytics）：用于收集崩溃报告</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">四</span>数据存储与安全</h2>
+    <p>我们采取行业标准的技术措施（包括加密传输、访问控制等）保护您的信息安全。游戏数据主要存储于您的设备本地，如涉及云存档，数据将存储于安全的服务器中。您卸载本游戏后，本地数据将随之删除；服务器端数据将在合理期限内予以清除或匿名化。</p>
+  </section>
+  <section>
+    <h2><span class="num">五</span>儿童隐私保护</h2>
+    <div class="warn-box">ShellRush 不针对 13 周岁以下的儿童。我们不会故意收集儿童的个人信息。如发现无意中收集了未成年人信息，请联系我们，我们将尽快删除。</div>
+  </section>
+  <section>
+    <h2><span class="num">六</span>您的权利</h2>
+    <ul>
+      <li><strong>访问权：</strong>了解我们持有的您的个人信息</li>
+      <li><strong>更正权：</strong>要求更正不准确的个人信息</li>
+      <li><strong>删除权：</strong>要求删除您的个人信息（在法律允许范围内）</li>
+      <li><strong>撤回同意权：</strong>撤回您此前提供的同意</li>
+      <li><strong>限制处理权：</strong>要求限制我们对您数据的处理</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">七</span>广告与个性化</h2>
+    <p>本游戏可能展示广告。我们或广告合作伙伴可能使用您的广告标识符（如 IDFA、GAID）提供个性化广告。您可在设备系统设置中选择「限制广告追踪」或重置广告 ID 来限制个性化广告。</p>
+  </section>
+  <section>
+    <h2><span class="num">八</span>本政策的变更</h2>
+    <p>我们可能会不时更新本隐私政策。重大变更将通过游戏内通知或其他适当方式告知您。更新后继续使用本游戏，表示您接受更新后的政策。</p>
+  </section>
+  <section>
+    <h2><span class="num">九</span>联系我们</h2>
+    <ul>
+      <li><strong>电子邮件：</strong><a href="mailto:yegang888888@gmail.com">yegang888888@gmail.com</a></li>
+      <li><strong>游戏内反馈：</strong>设置 → 联系客服</li>
+    </ul>
+    <div class="highlight-box">我们将在收到请求后 <strong>15 个工作日</strong>内予以回复。</div>
+  </section>
+  <footer><div class="footer-logo">SHELLRUSH</div><p class="footer-text">Last updated: 2026-05-17</p></footer>
+</div>
+
+<!-- ══════════ English ══════════ -->
+<div class="lang-content" id="lang-en">
+  <header>
+    <div class="game-badge">Privacy Policy</div>
+    <h1 class="title"><span>ShellRush</span> Privacy Policy</h1>
+    <p class="effective-date">Effective Date: May 17, 2026</p>
+  </header>
+  <div class="toc">
+    <div class="toc-title">// Contents</div>
+    <ol>
+      <li><a href="#">1. Information We Collect</a></li>
+      <li><a href="#">2. How We Use Information</a></li>
+      <li><a href="#">3. Sharing &amp; Disclosure</a></li>
+      <li><a href="#">4. Data Storage &amp; Security</a></li>
+      <li><a href="#">5. Children's Privacy</a></li>
+      <li><a href="#">6. Your Rights</a></li>
+      <li><a href="#">7. Advertising &amp; Personalization</a></li>
+      <li><a href="#">8. Changes to This Policy</a></li>
+      <li><a href="#">9. Contact Us</a></li>
+    </ol>
+  </div>
+  <div class="highlight-box">Thank you for choosing ShellRush. This Privacy Policy explains how we collect, use, store, and protect your personal information. Please read carefully before using the game. By using the game, you agree to this Privacy Policy. If you do not agree, please stop using the game.</div>
+  <section>
+    <h2><span class="num">01</span>Information We Collect</h2>
+    <h3>1.1 Information You Provide</h3>
+    <ul>
+      <li><strong>Account information:</strong> In-game nickname, avatar, and profile details (if registration is required)</li>
+      <li><strong>Support contact information:</strong> Email address or other contact details when contacting support</li>
+      <li><strong>User feedback:</strong> Text or screenshots submitted through the feedback feature</li>
+    </ul>
+    <h3>1.2 Information We Collect Automatically</h3>
+    <ul>
+      <li><strong>Device information:</strong> Device model, OS version, device identifiers (e.g., advertising ID)</li>
+      <li><strong>Gameplay data:</strong> Game progress, level data, scores, and session duration</li>
+      <li><strong>Log information:</strong> Crash reports, error logs, and performance data</li>
+      <li><strong>Network information:</strong> IP address, network type (Wi-Fi / mobile data)</li>
+    </ul>
+    <h3>1.3 Information We Do Not Collect</h3>
+    <div class="warn-box">We do <strong>not</strong> collect your real name, national ID, payment card details, precise geolocation, or contact list.</div>
+  </section>
+  <section>
+    <h2><span class="num">02</span>How We Use Information</h2>
+    <ul>
+      <li>Provide, maintain, and improve game features and user experience</li>
+      <li>Save game progress and enable cloud save functionality (where applicable)</li>
+      <li>Analyze gameplay data to optimize level design and balance</li>
+      <li>Detect and fix technical issues and prevent cheating</li>
+      <li>Handle your support requests and feedback</li>
+      <li>Send game-related update notifications (can be disabled)</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">03</span>Sharing &amp; Disclosure</h2>
+    <p>We do not sell your personal information. We may share it only in the following circumstances:</p>
+    <ul>
+      <li><strong>Service providers:</strong> Third-party vendors assisting in operating the game, limited to contractually agreed purposes</li>
+      <li><strong>Legal requirements:</strong> When required by law, court order, or government authority</li>
+      <li><strong>Safety protection:</strong> To protect the rights and safety of the game, users, or the public</li>
+    </ul>
+    <h3>3.1 Third-Party SDKs</h3>
+    <ul>
+      <li><strong>Advertising SDKs</strong> (e.g., AdMob, Unity Ads): Used to display ads; may collect advertising identifiers</li>
+      <li><strong>Analytics SDKs</strong> (e.g., Firebase Analytics): Used to collect gameplay statistics</li>
+      <li><strong>Crash reporting SDKs</strong> (e.g., Crashlytics): Used to collect crash reports</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">04</span>Data Storage &amp; Security</h2>
+    <p>We implement industry-standard technical measures (including encrypted transmission and access controls) to protect your information. Game data is primarily stored locally on your device. Where cloud save is involved, data is stored on secure servers. Upon uninstalling the game, local data is deleted. Server-side data is cleared or anonymized within a reasonable period as required by law.</p>
+  </section>
+  <section>
+    <h2><span class="num">05</span>Children's Privacy</h2>
+    <div class="warn-box">ShellRush is not directed at children under 13. We do not knowingly collect personal information from children. If you believe we have inadvertently collected information from a minor, please contact us and we will delete it promptly.</div>
+  </section>
+  <section>
+    <h2><span class="num">06</span>Your Rights</h2>
+    <ul>
+      <li><strong>Access:</strong> Know what personal information we hold about you</li>
+      <li><strong>Correction:</strong> Request correction of inaccurate personal information</li>
+      <li><strong>Deletion:</strong> Request deletion of your personal information (to the extent permitted by law)</li>
+      <li><strong>Withdrawal of consent:</strong> Withdraw your previously given consent</li>
+      <li><strong>Restriction:</strong> Request restriction of our processing of your data</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">07</span>Advertising &amp; Personalization</h2>
+    <p>The game may display advertisements. We or our advertising partners may use your advertising identifier (such as IDFA or GAID) to deliver personalized ads. You may limit this by enabling "Limit Ad Tracking" or resetting your advertising ID in your device settings.</p>
+  </section>
+  <section>
+    <h2><span class="num">08</span>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Significant changes will be communicated through in-game notifications or other appropriate means. Continued use of the game after updates constitutes acceptance of the revised policy.</p>
+  </section>
+  <section>
+    <h2><span class="num">09</span>Contact Us</h2>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:yegang888888@gmail.com">yegang888888@gmail.com</a></li>
+      <li><strong>In-game feedback:</strong> Settings → Contact Support</li>
+    </ul>
+    <div class="highlight-box">We will respond within <strong>15 business days</strong> of receipt.</div>
+  </section>
+  <footer><div class="footer-logo">SHELLRUSH</div><p class="footer-text">Last updated: 2026-05-17</p></footer>
+</div>
+
+<!-- ══════════ 日本語 ══════════ -->
+<div class="lang-content" id="lang-ja">
+  <header>
+    <div class="game-badge">Privacy Policy</div>
+    <h1 class="title"><span>ShellRush</span> プライバシーポリシー</h1>
+    <p class="effective-date">発効日：2026年5月17日</p>
+  </header>
+  <div class="toc">
+    <div class="toc-title">// 目次</div>
+    <ol>
+      <li><a href="#">1. 収集する情報</a></li>
+      <li><a href="#">2. 情報の利用方法</a></li>
+      <li><a href="#">3. 情報の共有と開示</a></li>
+      <li><a href="#">4. データの保管とセキュリティ</a></li>
+      <li><a href="#">5. 子どものプライバシー保護</a></li>
+      <li><a href="#">6. お客様の権利</a></li>
+      <li><a href="#">7. 広告とパーソナライズ</a></li>
+      <li><a href="#">8. ポリシーの変更</a></li>
+      <li><a href="#">9. お問い合わせ</a></li>
+    </ol>
+  </div>
+  <div class="highlight-box">ShellRushをご利用いただきありがとうございます。本プライバシーポリシーは、お客様の個人情報をどのように収集・利用・保管・保護するかを説明するものです。ゲームをご利用になる前に必ずお読みください。ゲームを利用することにより、本ポリシーに同意したものとみなされます。</div>
+  <section>
+    <h2><span class="num">01</span>収集する情報</h2>
+    <h3>1.1 お客様が提供する情報</h3>
+    <ul>
+      <li><strong>アカウント情報：</strong>ニックネーム、アバターなどのゲーム内プロフィール（登録が必要な場合）</li>
+      <li><strong>サポート連絡先：</strong>サポートへのお問い合わせ時に提供されたメールアドレスや連絡先</li>
+      <li><strong>フィードバック内容：</strong>フィードバック機能を通じて送信されたテキストやスクリーンショット</li>
+    </ul>
+    <h3>1.2 自動的に収集する情報</h3>
+    <ul>
+      <li><strong>デバイス情報：</strong>機種、OSバージョン、デバイス識別子（広告IDなど）</li>
+      <li><strong>ゲームプレイデータ：</strong>進捗、ステージデータ、スコア、プレイ時間</li>
+      <li><strong>ログ情報：</strong>クラッシュレポート、エラーログ、パフォーマンスデータ</li>
+      <li><strong>ネットワーク情報：</strong>IPアドレス、ネットワーク種別（Wi-Fi / モバイルデータ）</li>
+    </ul>
+    <h3>1.3 収集しない情報</h3>
+    <div class="warn-box">本ゲームでは、氏名、マイナンバー、クレジットカード情報、正確な位置情報、連絡帳は<strong>収集いたしません</strong>。</div>
+  </section>
+  <section>
+    <h2><span class="num">02</span>情報の利用方法</h2>
+    <ul>
+      <li>ゲーム機能およびユーザー体験の提供・維持・改善</li>
+      <li>ゲーム進捗の保存とクラウドセーブ機能の実現（該当する場合）</li>
+      <li>ゲームデータの分析によるステージ設計とバランスの最適化</li>
+      <li>技術的な問題の検出・修正、チート防止</li>
+      <li>サポートリクエストとフィードバックへの対応</li>
+      <li>ゲーム関連のアップデート通知の送信（無効化可能）</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">03</span>情報の共有と開示</h2>
+    <p>当社はお客様の個人情報を販売しません。以下の場合にのみ共有する場合があります：</p>
+    <ul>
+      <li><strong>サービスプロバイダー：</strong>ゲームの運営を支援する第三者ベンダー（契約上の目的に限定）</li>
+      <li><strong>法的要件：</strong>法律、裁判所命令、または政府機関からの要請がある場合</li>
+      <li><strong>安全保護：</strong>ゲーム、ユーザー、または公衆の権利と安全を守るため</li>
+    </ul>
+    <h3>3.1 サードパーティSDKについて</h3>
+    <ul>
+      <li><strong>広告SDK</strong>（AdMob、Unity Adsなど）：広告表示に使用、広告識別子を収集する場合あり</li>
+      <li><strong>分析SDK</strong>（Firebase Analyticsなど）：ゲーム統計データの収集に使用</li>
+      <li><strong>クラッシュレポートSDK</strong>（Crashlyticsなど）：クラッシュレポートの収集に使用</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">04</span>データの保管とセキュリティ</h2>
+    <p>当社は、業界標準の技術的措置（暗号化転送やアクセス制御を含む）によりお客様の情報を保護します。ゲームデータは主にお客様のデバイスにローカル保存されます。クラウドセーブが関係する場合はセキュアなサーバーに保管されます。アンインストール後、ローカルデータは削除され、サーバーデータは法律の要件に従い合理的な期間内に消去または匿名化されます。</p>
+  </section>
+  <section>
+    <h2><span class="num">05</span>子どものプライバシー保護</h2>
+    <div class="warn-box">ShellRushは13歳未満の子どもを対象としていません。当社は意図的に子どもの個人情報を収集しません。未成年者の情報を誤って収集したと思われる場合は、ご連絡ください。速やかに削除いたします。</div>
+  </section>
+  <section>
+    <h2><span class="num">06</span>お客様の権利</h2>
+    <ul>
+      <li><strong>アクセス権：</strong>当社が保有するお客様の個人情報の確認</li>
+      <li><strong>訂正権：</strong>不正確な個人情報の訂正を要求する権利</li>
+      <li><strong>削除権：</strong>個人情報の削除を要求する権利（法律の許容範囲内）</li>
+      <li><strong>同意の撤回：</strong>以前に提供した同意を撤回する権利</li>
+      <li><strong>処理の制限：</strong>当社によるデータ処理の制限を要求する権利</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">07</span>広告とパーソナライズ</h2>
+    <p>本ゲームでは広告が表示される場合があります。当社または広告パートナーは、広告識別子（IDFAやGAIDなど）を使用してパーソナライズ広告を配信する場合があります。デバイスの設定で「広告トラッキングを制限」を有効にするか、広告IDをリセットすることで制限できます。</p>
+  </section>
+  <section>
+    <h2><span class="num">08</span>ポリシーの変更</h2>
+    <p>本プライバシーポリシーは随時更新される場合があります。重要な変更はゲーム内通知などの適切な方法でお知らせします。更新後もゲームを継続してご利用になることで、改訂されたポリシーへの同意とみなされます。</p>
+  </section>
+  <section>
+    <h2><span class="num">09</span>お問い合わせ</h2>
+    <ul>
+      <li><strong>メール：</strong><a href="mailto:yegang888888@gmail.com">yegang888888@gmail.com</a></li>
+      <li><strong>ゲーム内フィードバック：</strong>設定 → サポートに連絡</li>
+    </ul>
+    <div class="highlight-box">お問い合わせを受領してから <strong>15営業日以内</strong>に返答いたします。</div>
+  </section>
+  <footer><div class="footer-logo">SHELLRUSH</div><p class="footer-text">Last updated: 2026-05-17</p></footer>
+</div>
+
+<!-- ══════════ 한국어 ══════════ -->
+<div class="lang-content" id="lang-ko">
+  <header>
+    <div class="game-badge">Privacy Policy</div>
+    <h1 class="title"><span>ShellRush</span> 개인정보 처리방침</h1>
+    <p class="effective-date">시행일: 2026년 5월 17일</p>
+  </header>
+  <div class="toc">
+    <div class="toc-title">// 목차</div>
+    <ol>
+      <li><a href="#">1. 수집하는 정보</a></li>
+      <li><a href="#">2. 정보의 이용 방법</a></li>
+      <li><a href="#">3. 정보의 공유 및 공개</a></li>
+      <li><a href="#">4. 데이터 저장 및 보안</a></li>
+      <li><a href="#">5. 아동 개인정보 보호</a></li>
+      <li><a href="#">6. 이용자의 권리</a></li>
+      <li><a href="#">7. 광고 및 개인화</a></li>
+      <li><a href="#">8. 방침 변경</a></li>
+      <li><a href="#">9. 문의하기</a></li>
+    </ol>
+  </div>
+  <div class="highlight-box">ShellRush를 선택해 주셔서 감사합니다. 본 개인정보 처리방침은 당사가 귀하의 개인정보를 어떻게 수집·이용·보관·보호하는지 설명합니다. 게임 이용 전 반드시 읽어주세요. 게임을 이용하면 본 방침에 동의한 것으로 간주됩니다.</div>
+  <section>
+    <h2><span class="num">01</span>수집하는 정보</h2>
+    <h3>1.1 이용자가 직접 제공하는 정보</h3>
+    <ul>
+      <li><strong>계정 정보：</strong>닉네임, 아바타 등 게임 내 프로필（회원가입이 필요한 경우）</li>
+      <li><strong>고객센터 연락처：</strong>문의 시 제공하는 이메일 주소 또는 연락처</li>
+      <li><strong>피드백 내용：</strong>피드백 기능을 통해 제출한 텍스트 또는 스크린샷</li>
+    </ul>
+    <h3>1.2 자동으로 수집되는 정보</h3>
+    <ul>
+      <li><strong>기기 정보：</strong>기기 모델, OS 버전, 기기 식별자（광고 ID 등）</li>
+      <li><strong>게임 행동 데이터：</strong>게임 진행 상황, 스테이지 데이터, 점수, 플레이 시간</li>
+      <li><strong>로그 정보：</strong>충돌 보고서, 오류 로그, 성능 데이터</li>
+      <li><strong>네트워크 정보：</strong>IP 주소, 네트워크 유형（Wi-Fi / 모바일 데이터）</li>
+    </ul>
+    <h3>1.3 수집하지 않는 정보</h3>
+    <div class="warn-box">본 게임은 실명, 주민등록번호, 카드 정보, 정밀 위치 정보 또는 연락처를 <strong>수집하지 않습니다</strong>.</div>
+  </section>
+  <section>
+    <h2><span class="num">02</span>정보의 이용 방법</h2>
+    <ul>
+      <li>게임 기능 및 사용자 경험 제공, 유지 및 개선</li>
+      <li>게임 진행 상황 저장 및 클라우드 저장 기능 구현（해당하는 경우）</li>
+      <li>게임 데이터 분석을 통한 스테이지 설계 및 밸런스 최적화</li>
+      <li>기술적 문제 감지 및 수정, 부정행위 방지</li>
+      <li>고객 문의 및 피드백 처리</li>
+      <li>게임 관련 업데이트 알림 발송（비활성화 가능）</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">03</span>정보의 공유 및 공개</h2>
+    <p>당사는 귀하의 개인정보를 판매하지 않습니다. 다음의 경우에만 공유할 수 있습니다：</p>
+    <ul>
+      <li><strong>서비스 제공업체：</strong>게임 운영을 지원하는 제3자 업체（계약상 목적에 한함）</li>
+      <li><strong>법적 요구：</strong>법률, 법원 명령 또는 정부 기관의 요청이 있는 경우</li>
+      <li><strong>안전 보호：</strong>게임, 이용자 또는 공중의 권리와 안전을 보호하기 위한 경우</li>
+    </ul>
+    <h3>3.1 제3자 SDK 안내</h3>
+    <ul>
+      <li><strong>광고 SDK</strong>（AdMob, Unity Ads 등）：광고 표시에 사용, 광고 식별자를 수집할 수 있음</li>
+      <li><strong>분석 SDK</strong>（Firebase Analytics 등）：게임 통계 데이터 수집에 사용</li>
+      <li><strong>충돌 분석 SDK</strong>（Crashlytics 등）：충돌 보고서 수집에 사용</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">04</span>데이터 저장 및 보안</h2>
+    <p>당사는 암호화 전송 및 접근 제어 등 업계 표준의 기술적 조치를 통해 귀하의 정보를 보호합니다. 게임 데이터는 주로 기기에 로컬 저장됩니다. 클라우드 저장이 포함된 경우 안전한 서버에 저장됩니다. 게임 삭제 후 로컬 데이터는 삭제되며, 서버 데이터는 법적 요건에 따라 합리적인 기간 내에 삭제 또는 익명화됩니다.</p>
+  </section>
+  <section>
+    <h2><span class="num">05</span>아동 개인정보 보호</h2>
+    <div class="warn-box">ShellRush는 만 14세 미만 아동을 대상으로 하지 않습니다. 당사는 아동의 개인정보를 의도적으로 수집하지 않습니다. 미성년자의 정보를 실수로 수집한 사실을 발견하시면 연락해 주세요. 즉시 삭제하겠습니다.</div>
+  </section>
+  <section>
+    <h2><span class="num">06</span>이용자의 권리</h2>
+    <ul>
+      <li><strong>열람권：</strong>당사가 보유한 귀하의 개인정보 확인</li>
+      <li><strong>정정권：</strong>부정확한 개인정보의 정정 요청</li>
+      <li><strong>삭제권：</strong>개인정보 삭제 요청（법률이 허용하는 범위 내）</li>
+      <li><strong>동의 철회권：</strong>이전에 제공한 동의 철회</li>
+      <li><strong>처리 제한권：</strong>당사의 데이터 처리 제한 요청</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">07</span>광고 및 개인화</h2>
+    <p>본 게임에는 광고가 표시될 수 있습니다. 당사 또는 광고 파트너는 광고 식별자（IDFA, GAID 등）를 사용하여 맞춤형 광고를 제공할 수 있습니다. 기기 설정에서 「광고 추적 제한」을 활성화하거나 광고 ID를 초기화하여 맞춤형 광고를 제한할 수 있습니다.</p>
+  </section>
+  <section>
+    <h2><span class="num">08</span>방침 변경</h2>
+    <p>본 개인정보 처리방침은 수시로 업데이트될 수 있습니다. 중요한 변경 사항은 게임 내 알림 등 적절한 방법으로 공지합니다. 업데이트 후 게임을 계속 이용하면 변경된 방침에 동의한 것으로 간주됩니다.</p>
+  </section>
+  <section>
+    <h2><span class="num">09</span>문의하기</h2>
+    <ul>
+      <li><strong>이메일：</strong><a href="mailto:yegang888888@gmail.com">yegang888888@gmail.com</a></li>
+      <li><strong>게임 내 피드백：</strong>설정 → 고객센터 문의</li>
+    </ul>
+    <div class="highlight-box">문의를 받은 후 <strong>15 영업일 이내</strong>에 답변 드리겠습니다.</div>
+  </section>
+  <footer><div class="footer-logo">SHELLRUSH</div><p class="footer-text">Last updated: 2026-05-17</p></footer>
+</div>
+
+<!-- ══════════ العربية ══════════ -->
+<div class="lang-content" id="lang-ar">
+  <header>
+    <div class="game-badge">Privacy Policy</div>
+    <h1 class="title"><span>ShellRush</span> سياسة الخصوصية</h1>
+    <p class="effective-date">تاريخ السريان: 17 مايو 2026</p>
+  </header>
+  <div class="toc">
+    <div class="toc-title">// المحتويات</div>
+    <ol>
+      <li><a href="#">١. المعلومات التي نجمعها</a></li>
+      <li><a href="#">٢. كيفية استخدام المعلومات</a></li>
+      <li><a href="#">٣. المشاركة والإفصاح</a></li>
+      <li><a href="#">٤. تخزين البيانات والأمان</a></li>
+      <li><a href="#">٥. خصوصية الأطفال</a></li>
+      <li><a href="#">٦. حقوقك</a></li>
+      <li><a href="#">٧. الإعلانات والتخصيص</a></li>
+      <li><a href="#">٨. التغييرات على هذه السياسة</a></li>
+      <li><a href="#">٩. تواصل معنا</a></li>
+    </ol>
+  </div>
+  <div class="highlight-box">شكراً لاختيارك ShellRush. تشرح سياسة الخصوصية هذه كيفية جمع معلوماتك الشخصية واستخدامها وتخزينها وحمايتها. يُرجى قراءة هذه السياسة بعناية قبل استخدام اللعبة. باستخدامك للعبة، فإنك توافق على هذه السياسة.</div>
+  <section>
+    <h2><span class="num">٠١</span>المعلومات التي نجمعها</h2>
+    <h3>١.١ المعلومات التي تقدمها</h3>
+    <ul>
+      <li><strong>معلومات الحساب:</strong> اسم المستخدم والصورة الرمزية وبيانات الملف الشخصي داخل اللعبة</li>
+      <li><strong>معلومات الدعم:</strong> عنوان البريد الإلكتروني أو تفاصيل الاتصال عند التواصل مع الدعم</li>
+      <li><strong>ملاحظات المستخدم:</strong> النصوص أو لقطات الشاشة المُرسلة عبر ميزة الملاحظات</li>
+    </ul>
+    <h3>١.٢ المعلومات التي نجمعها تلقائياً</h3>
+    <ul>
+      <li><strong>معلومات الجهاز:</strong> طراز الجهاز، وإصدار نظام التشغيل، ومعرّفات الجهاز</li>
+      <li><strong>بيانات اللعب:</strong> تقدم اللعبة، وبيانات المستويات، والنقاط، ومدة الجلسة</li>
+      <li><strong>معلومات السجل:</strong> تقارير الأعطال، وسجلات الأخطاء، وبيانات الأداء</li>
+      <li><strong>معلومات الشبكة:</strong> عنوان IP، ونوع الشبكة (Wi-Fi / بيانات الجوال)</li>
+    </ul>
+    <h3>١.٣ المعلومات التي لا نجمعها</h3>
+    <div class="warn-box"><strong>لا نجمع</strong> اسمك الحقيقي، أو رقم الهوية الوطنية، أو تفاصيل بطاقة الدفع، أو الموقع الجغرافي الدقيق، أو قائمة جهات اتصالك.</div>
+  </section>
+  <section>
+    <h2><span class="num">٠٢</span>كيفية استخدام المعلومات</h2>
+    <ul>
+      <li>توفير ميزات اللعبة وتجربة المستخدم والحفاظ عليها وتحسينها</li>
+      <li>حفظ تقدم اللعبة وتمكين وظيفة الحفظ السحابي</li>
+      <li>تحليل بيانات اللعب لتحسين تصميم المستويات والتوازن</li>
+      <li>الكشف عن المشكلات التقنية وإصلاحها ومنع الغش</li>
+      <li>معالجة طلبات الدعم وملاحظاتك</li>
+      <li>إرسال إشعارات تحديث اللعبة (يمكن تعطيلها)</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">٠٣</span>المشاركة والإفصاح</h2>
+    <p>لا نبيع معلوماتك الشخصية. قد نشاركها فقط في الحالات التالية:</p>
+    <ul>
+      <li><strong>مزودو الخدمة:</strong> موردون خارجيون يساعدون في تشغيل اللعبة، مقتصرون على الأغراض المتفق عليها</li>
+      <li><strong>المتطلبات القانونية:</strong> عند الاقتضاء بموجب القانون أو أمر المحكمة</li>
+      <li><strong>الحماية والسلامة:</strong> لحماية حقوق وسلامة اللعبة والمستخدمين أو العامة</li>
+    </ul>
+    <h3>٣.١ مجموعات تطوير البرامج (SDK) الخارجية</h3>
+    <ul>
+      <li><strong>SDK الإعلانات</strong> (مثل AdMob وUnity Ads): لعرض الإعلانات وقد تجمع معرّفات الإعلانات</li>
+      <li><strong>SDK التحليلات</strong> (مثل Firebase Analytics): لجمع إحصاءات اللعب</li>
+      <li><strong>SDK تقارير الأعطال</strong> (مثل Crashlytics): لجمع تقارير الأعطال</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">٠٤</span>تخزين البيانات والأمان</h2>
+    <p>نطبّق تدابير تقنية وفق معايير الصناعة (بما في ذلك النقل المشفّر وضوابط الوصول) لحماية معلوماتك. تُخزَّن بيانات اللعبة بصورة رئيسية على جهازك محلياً. في حالة الحفظ السحابي، تُخزَّن على خوادم آمنة. عند إلغاء التثبيت تُحذف البيانات المحلية، وتُحذف بيانات الخوادم أو تُجعل مجهولة الهوية خلال فترة معقولة.</p>
+  </section>
+  <section>
+    <h2><span class="num">٠٥</span>خصوصية الأطفال</h2>
+    <div class="warn-box">لا يستهدف ShellRush الأطفال دون سن 13 عاماً. لا نجمع معلومات شخصية من الأطفال عن قصد. إذا كنت تعتقد أننا جمعنا معلومات من قاصر عن غير قصد، يُرجى التواصل معنا وسنحذفها فوراً.</div>
+  </section>
+  <section>
+    <h2><span class="num">٠٦</span>حقوقك</h2>
+    <ul>
+      <li><strong>حق الوصول:</strong> معرفة المعلومات الشخصية التي نحتفظ بها عنك</li>
+      <li><strong>حق التصحيح:</strong> طلب تصحيح المعلومات الشخصية غير الدقيقة</li>
+      <li><strong>حق الحذف:</strong> طلب حذف معلوماتك الشخصية (بالقدر الذي يسمح به القانون)</li>
+      <li><strong>سحب الموافقة:</strong> سحب موافقتك التي منحتها سابقاً</li>
+      <li><strong>تقييد المعالجة:</strong> طلب تقييد معالجتنا لبياناتك</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">٠٧</span>الإعلانات والتخصيص</h2>
+    <p>قد تعرض اللعبة إعلانات. قد نستخدم نحن أو شركاؤنا الإعلانيون معرّف الإعلانات الخاص بك (مثل IDFA أو GAID) لتقديم إعلانات مخصّصة. يمكنك تقييد ذلك عبر تفعيل «تقييد تتبع الإعلانات» أو إعادة تعيين معرّف الإعلانات في إعدادات جهازك.</p>
+  </section>
+  <section>
+    <h2><span class="num">٠٨</span>التغييرات على هذه السياسة</h2>
+    <p>قد نحدّث سياسة الخصوصية هذه من وقت لآخر. سيتم إخطارك بالتغييرات الجوهرية عبر الإشعارات داخل اللعبة. استمرارك في الاستخدام بعد التحديثات يُعدّ قبولاً للسياسة المُعدَّلة.</p>
+  </section>
+  <section>
+    <h2><span class="num">٠٩</span>تواصل معنا</h2>
+    <ul>
+      <li><strong>البريد الإلكتروني:</strong> <a href="mailto:yegang888888@gmail.com">yegang888888@gmail.com</a></li>
+      <li><strong>الملاحظات داخل اللعبة:</strong> الإعدادات ← الدعم الفني</li>
+    </ul>
+    <div class="highlight-box">سنرد على طلبك في غضون <strong>15 يوم عمل</strong> من استلامه.</div>
+  </section>
+  <footer><div class="footer-logo">SHELLRUSH</div><p class="footer-text">Last updated: 2026-05-17</p></footer>
+</div>
+
+<!-- ══════════ Español ══════════ -->
+<div class="lang-content" id="lang-es">
+  <header>
+    <div class="game-badge">Privacy Policy</div>
+    <h1 class="title"><span>ShellRush</span> Política de Privacidad</h1>
+    <p class="effective-date">Fecha de vigencia: 17 de mayo de 2026</p>
+  </header>
+  <div class="toc">
+    <div class="toc-title">// Contenido</div>
+    <ol>
+      <li><a href="#">1. Información que recopilamos</a></li>
+      <li><a href="#">2. Cómo usamos la información</a></li>
+      <li><a href="#">3. Compartición y divulgación</a></li>
+      <li><a href="#">4. Almacenamiento y seguridad</a></li>
+      <li><a href="#">5. Privacidad de menores</a></li>
+      <li><a href="#">6. Tus derechos</a></li>
+      <li><a href="#">7. Publicidad y personalización</a></li>
+      <li><a href="#">8. Cambios en esta política</a></li>
+      <li><a href="#">9. Contáctanos</a></li>
+    </ol>
+  </div>
+  <div class="highlight-box">Gracias por elegir ShellRush. Esta Política de Privacidad explica cómo recopilamos, usamos, almacenamos y protegemos tu información personal. Lee esta política detenidamente antes de usar el juego. Al usar el juego, aceptas esta Política de Privacidad. Si no estás de acuerdo, deja de usar el juego.</div>
+  <section>
+    <h2><span class="num">01</span>Información que recopilamos</h2>
+    <h3>1.1 Información que proporcionas</h3>
+    <ul>
+      <li><strong>Información de cuenta:</strong> Apodo, avatar y datos de perfil dentro del juego (si el registro es necesario)</li>
+      <li><strong>Información de soporte:</strong> Dirección de correo electrónico u otros datos de contacto al comunicarte con soporte</li>
+      <li><strong>Comentarios de usuario:</strong> Texto o capturas de pantalla enviadas a través de la función de comentarios</li>
+    </ul>
+    <h3>1.2 Información que recopilamos automáticamente</h3>
+    <ul>
+      <li><strong>Información del dispositivo:</strong> Modelo, versión del SO, identificadores del dispositivo (p. ej., ID de publicidad)</li>
+      <li><strong>Datos de juego:</strong> Progreso, datos de niveles, puntuaciones y duración de sesión</li>
+      <li><strong>Información de registro:</strong> Informes de fallos, registros de errores y datos de rendimiento</li>
+      <li><strong>Información de red:</strong> Dirección IP, tipo de red (Wi-Fi / datos móviles)</li>
+    </ul>
+    <h3>1.3 Información que no recopilamos</h3>
+    <div class="warn-box"><strong>No recopilamos</strong> tu nombre real, número de identificación nacional, datos de tarjeta de pago, geolocalización precisa ni lista de contactos.</div>
+  </section>
+  <section>
+    <h2><span class="num">02</span>Cómo usamos la información</h2>
+    <ul>
+      <li>Proporcionar, mantener y mejorar las funciones del juego y la experiencia del usuario</li>
+      <li>Guardar el progreso del juego y habilitar el guardado en la nube (cuando aplique)</li>
+      <li>Analizar datos de juego para optimizar el diseño de niveles y el equilibrio</li>
+      <li>Detectar y corregir problemas técnicos y prevenir trampas</li>
+      <li>Gestionar tus solicitudes de soporte y comentarios</li>
+      <li>Enviar notificaciones de actualización relacionadas con el juego (desactivables)</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">03</span>Compartición y divulgación</h2>
+    <p>No vendemos tu información personal. Solo podemos compartirla en las siguientes circunstancias:</p>
+    <ul>
+      <li><strong>Proveedores de servicios:</strong> Terceros que asisten en la operación del juego, limitados a los fines acordados contractualmente</li>
+      <li><strong>Requisitos legales:</strong> Cuando lo exija la ley, una orden judicial o una autoridad gubernamental</li>
+      <li><strong>Protección de seguridad:</strong> Para proteger los derechos y la seguridad del juego, los usuarios o el público</li>
+    </ul>
+    <h3>3.1 SDKs de terceros</h3>
+    <ul>
+      <li><strong>SDKs de publicidad</strong> (p. ej., AdMob, Unity Ads): Para mostrar anuncios; pueden recopilar identificadores de publicidad</li>
+      <li><strong>SDKs de análisis</strong> (p. ej., Firebase Analytics): Para recopilar estadísticas de juego</li>
+      <li><strong>SDKs de informes de fallos</strong> (p. ej., Crashlytics): Para recopilar informes de fallos</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">04</span>Almacenamiento y seguridad</h2>
+    <p>Implementamos medidas técnicas estándar del sector (incluida la transmisión cifrada y controles de acceso) para proteger tu información. Los datos del juego se almacenan principalmente de forma local en tu dispositivo. En caso de guardado en la nube, los datos se almacenan en servidores seguros. Al desinstalar el juego, los datos locales se eliminan. Los datos del servidor se borran o anonimizan en un plazo razonable conforme a la ley.</p>
+  </section>
+  <section>
+    <h2><span class="num">05</span>Privacidad de menores</h2>
+    <div class="warn-box">ShellRush no está dirigido a menores de 13 años. No recopilamos información personal de menores de manera intencionada. Si crees que hemos recopilado información de un menor de forma involuntaria, contáctanos y la eliminaremos de inmediato.</div>
+  </section>
+  <section>
+    <h2><span class="num">06</span>Tus derechos</h2>
+    <ul>
+      <li><strong>Acceso:</strong> Conocer la información personal que tenemos sobre ti</li>
+      <li><strong>Rectificación:</strong> Solicitar la corrección de información personal inexacta</li>
+      <li><strong>Supresión:</strong> Solicitar la eliminación de tu información personal (en la medida permitida por la ley)</li>
+      <li><strong>Retirada del consentimiento:</strong> Retirar el consentimiento otorgado previamente</li>
+      <li><strong>Restricción:</strong> Solicitar la restricción del tratamiento de tus datos</li>
+    </ul>
+  </section>
+  <section>
+    <h2><span class="num">07</span>Publicidad y personalización</h2>
+    <p>El juego puede mostrar publicidad. Nosotros o nuestros socios publicitarios podemos utilizar tu identificador de publicidad (como IDFA o GAID) para ofrecer anuncios personalizados. Puedes limitar esto activando "Limitar seguimiento de anuncios" o restableciendo tu ID de publicidad en la configuración del sistema.</p>
+  </section>
+  <section>
+    <h2><span class="num">08</span>Cambios en esta política</h2>
+    <p>Podemos actualizar esta Política de Privacidad periódicamente. Los cambios significativos se comunicarán mediante notificaciones dentro del juego u otros medios adecuados. El uso continuado del juego tras las actualizaciones implica la aceptación de la política revisada.</p>
+  </section>
+  <section>
+    <h2><span class="num">09</span>Contáctanos</h2>
+    <ul>
+      <li><strong>Correo electrónico:</strong> <a href="mailto:yegang888888@gmail.com">yegang888888@gmail.com</a></li>
+      <li><strong>Comentarios en el juego:</strong> Configuración → Contactar con soporte</li>
+    </ul>
+    <div class="highlight-box">Responderemos a tu solicitud en un plazo de <strong>15 días hábiles</strong> desde su recepción.</div>
+  </section>
+  <footer><div class="footer-logo">SHELLRUSH</div><p class="footer-text">Last updated: 2026-05-17</p></footer>
+</div>
+
+</div><!-- /page -->
+
+<script>
+  function switchLang(lang, dir, htmlLang, btn) {
+    document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('lang-' + lang).classList.add('active');
+    btn.classList.add('active');
+    document.documentElement.setAttribute('dir', dir);
+    document.documentElement.setAttribute('lang', htmlLang);
+    window.scrollTo(0, 0);
+  }
+</script>
+</body>
+</html>
