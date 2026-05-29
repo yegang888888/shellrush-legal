@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Desert Tank Battle play guide — 6 languages.">
+  <title>Desert Tank Battle · Play Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0a08; --bg-card: rgba(28, 22, 12, 0.92); --border: rgba(200, 160, 60, 0.35);
+      --gold: #f0d060; --gold-dim: #c8a848; --sand: #c09048; --green: #44dd44; --water: #66ff88;
+      --text: #e8dcc8; --muted: #a89868; --shadow: 0 12px 40px rgba(0,0,0,0.45); --radius: 14px;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --sans: "Noto Sans SC", "Noto Sans JP", "Noto Sans KR", "Noto Sans Arabic", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html[lang="ar"] body, html[dir="rtl"] body { font-family: "Noto Sans Arabic", var(--sans); }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; min-height: 100vh; }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(192,144,72,0.18), transparent 55%);
+    }
+    .wrap { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 28px 20px 64px; }
+    header {
+      text-align: center; margin-bottom: 20px; padding: 24px 20px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: linear-gradient(165deg, rgba(40,32,16,0.95), rgba(20,16,10,0.98)); box-shadow: var(--shadow);
+    }
+    .badge { display: inline-block; font-family: var(--mono); font-size: 11px; color: var(--gold-dim);
+      border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px; margin-bottom: 12px; }
+    h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--gold); font-weight: 700; margin-bottom: 8px; }
+    .subtitle { color: var(--muted); font-size: 0.92rem; max-width: 38em; margin: 0 auto; }
+    .lang-tabs {
+      display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 20px;
+      padding: 4px; border-radius: 12px; background: rgba(12,10,8,0.6); border: 1px solid var(--border);
+    }
+    .lang-tabs button {
+      font-family: var(--mono); font-size: 12px; padding: 8px 14px; border: 1px solid transparent;
+      border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer;
+    }
+    .lang-tabs button:hover { color: var(--gold); background: rgba(40,32,16,0.8); }
+    .lang-tabs button.active { color: var(--gold); background: rgba(58,48,24,0.95); border-color: var(--border); font-weight: 600; }
+    .search-bar { position: sticky; top: 12px; z-index: 50; margin-bottom: 22px; }
+    .search-inner {
+      display: flex; gap: 10px; align-items: center; padding: 12px 16px;
+      background: rgba(12,10,8,0.94); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); backdrop-filter: blur(12px);
+    }
+    .search-inner:focus-within { border-color: rgba(240,208,96,0.65); }
+    .search-inner svg { width: 20px; height: 20px; stroke: var(--gold-dim); flex-shrink: 0; }
+    #q { flex: 1; border: none; background: transparent; color: var(--text); font: inherit; font-size: 16px; outline: none; }
+    #result-hint { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .nav-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; justify-content: center; }
+    .nav-tags a {
+      font-family: var(--mono); font-size: 12px; color: var(--gold); text-decoration: none;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(28,22,12,0.6);
+    }
+    .nav-tags a:hover { background: rgba(40,32,16,0.85); }
+    section { margin-bottom: 26px; }
+    section > h2 {
+      font-size: 1.12rem; color: var(--gold); margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px;
+    }
+    .card-grid { display: grid; gap: 12px; }
+    @media (min-width: 640px) { .card-grid.cols-2 { grid-template-columns: 1fr 1fr; } }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+    .card.hidden-by-search { display: none; }
+    .card.match { border-color: rgba(240,208,96,0.55); box-shadow: 0 0 0 1px rgba(240,208,96,0.15); }
+    .card h3 { font-size: 1rem; color: var(--gold); margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .tag { font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+    .tag-campaign { background: rgba(192,144,72,0.25); color: var(--sand); }
+    .tag-skill { background: rgba(58,122,26,0.35); color: #8fdc6a; }
+    .tag-unit { background: rgba(232,104,40,0.25); color: #ffb080; }
+    .tag-ctrl { background: rgba(100,120,200,0.25); color: #a8c0ff; }
+    .tag-map { background: rgba(102,255,136,0.15); color: var(--water); }
+    .tag-meta { background: rgba(240,208,96,0.15); color: var(--gold); }
+    .card ul { margin: 8px 0 0 1.1em; font-size: 0.92rem; }
+    html[dir="rtl"] .card ul { margin: 8px 1.1em 0 0; }
+    .card p { font-size: 0.92rem; }
+    mark.hit { background: rgba(240,208,96,0.35); color: var(--gold); padding: 0 2px; border-radius: 2px; }
+    .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .fact { text-align: center; padding: 12px 8px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); }
+    .fact strong { display: block; font-family: var(--mono); font-size: 1.45rem; color: var(--gold); }
+    .fact span { font-size: 0.78rem; color: var(--muted); }
+    table.ctrl { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 8px; }
+    table.ctrl th, table.ctrl td { padding: 8px 10px; border-bottom: 1px solid rgba(139,105,20,0.25); }
+    html[dir="rtl"] table.ctrl th, html[dir="rtl"] table.ctrl td { text-align: right; }
+    table.ctrl th { color: var(--gold-dim); font-family: var(--mono); font-size: 11px; }
+    table.ctrl code { font-family: var(--mono); color: var(--green); background: rgba(68,221,68,0.08); padding: 2px 6px; border-radius: 4px; }
+    footer { text-align: center; margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--muted); }
+    .no-results { display: none; text-align: center; padding: 40px 16px; color: var(--muted); font-family: var(--mono); }
+    .no-results.visible { display: block; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge" id="hdr-badge"></span>
+      <h1 id="hdr-title"></h1>
+      <p class="subtitle" id="hdr-sub"></p>
+    </header>
+    <nav class="lang-tabs" id="lang-tabs" aria-label="Language"></nav>
+    <div class="search-bar">
+      <div class="search-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20L16 16"/></svg>
+        <input type="search" id="q" autocomplete="off" />
+        <span id="result-hint"></span>
+      </div>
+    </div>
+    <nav class="nav-tags" id="nav-tags"></nav>
+    <div class="quick-facts" id="quick-facts"></div>
+    <p id="no-results" class="no-results"></p>
+    <main id="main"></main>
+    <footer id="footer"></footer>
+  </div>
+  <script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'tank_playguide_lang';
+  var LOCALES = ['zh', 'en', 'ja', 'ko', 'ar', 'es'];
+  var LOCALE_LABELS = { zh: '中文', en: 'English', ja: '日本語', ko: '한국어', ar: 'العربية', es: 'Español' };
+
+  var pack = {
+    zh: {
+      htmlLang: 'zh-CN', dir: 'ltr',
+      badge: '沙漠坦克大战 · 指南',
+      hdrTitle: '沙漠坦克大战',
+      hdrSub: '官方玩法摘要：10 关战役、火力成长、四种技能与沙漠战场机制。',
+      searchPh: '搜索指南（关键词过滤卡片）…',
+      resultFmt: function (n, t) { return n + ' / ' + t; },
+      noResults: '没有匹配的卡片，请换个词试试。',
+      nav: { overview: '总览', campaign: '战役', controls: '操作', skills: '技能', units: '单位', map: '地图', meta: '其他' },
+      facts: [
+        { n: '10', l: '关卡' },
+        { n: '6', l: '条命进入下一关' },
+        { n: '10', l: '火力档位' },
+        { n: '4', l: '技能（含冲锋）' },
+        { n: 'BOSS', l: '巨型头目' },
+        { n: '6', l: '游戏内语言' }
+      ],
+      sections: {
+        overview: {
+          title: '总览',
+          cards: [
+            { kw: '沙漠,坦克,胜利,关卡,命,火力,排行榜', tag: '总览', cls: 'tag-meta', html: '<p>《沙漠坦克大战》是俯视沙漠战场射击游戏：驾驶绿色主战坦克歼敌、成长火力、在第十关集齐条件即可胜利。</p><ul><li>共 <strong>10</strong> 关；每关需要集满 <strong>6</strong> 条命才能进入下一关，第 10 关集满即通关。</li><li>通过歼敌可在 <strong>10</strong> 个火力档位间升级（单发 → 强化五连发）。</li><li>含巨型 <strong>BOSS</strong>、触摸与键鼠双操控，以及 Game Center 排行榜。</li></ul>' },
+            { kw: 'HUD,得分,暂停', tag: '界面', cls: 'tag-meta', html: '<p>顶部 HUD 显示生命、关卡进度、当前命数/上限、武器名、射程与锁定状态；可一键暂停并访问语言与音频选项。</p>' }
+          ]
+        },
+        campaign: {
+          title: '战役与胜利条件',
+          cards: [
+            { kw: '关卡,阶段,地形,刷新,加速', tag: '流程', cls: 'tag-campaign', html: '<p>战役共 <strong>10</strong> 关。每进入新关，沙漠上可破坏/可走的地形更少，敌军与 BOSS 的刷新节奏更快（大约每关 +10% 压力）。</p>' },
+            { kw: '命,补命,六条命,下一关', tag: '命数', cls: 'tag-campaign', html: '<p>拾取绿色 <strong>+1 补命</strong> 坦克道具可增加一条命。需要累计到 <strong>6</strong> 条命才会解锁进入下一关；在第 <strong>10</strong> 关再次集满 6 命即胜利。</p>' },
+            { kw: 'BOSS,宝箱,狂暴', tag: 'BOSS', cls: 'tag-campaign', html: '<p>累积歼敌可召唤巨型红色 BOSS：高血量、重火力、可召唤小兵，低血量会<strong>狂暴</strong>。击毁可获得高分与技能宝箱补给。</p>' }
+          ]
+        },
+        controls: {
+          title: '操作方式',
+          cards: [
+            { kw: '键盘,WASD,鼠标,暂停,空格,锁定', tag: '键鼠', cls: 'tag-ctrl', html: '<table class="ctrl"><thead><tr><th>动作</th><th>按键</th></tr></thead><tbody><tr><td>移动</td><td><code>WASD</code> / 方向键</td></tr><tr><td>瞄准与射击</td><td>鼠标瞄准 · 点击或 <code>Space</code> 开火</td></tr><tr><td>自动驾驶 / 穿林冲敌</td><td>双击战场或小地图</td></tr><tr><td>技能</td><td><code>1</code> 核弹 · <code>2</code> 闪电 · <code>3</code> 烟雾</td></tr><tr><td>锁定目标</td><td>点击敌人 / <code>Tab</code></td></tr><tr><td>暂停</td><td><code>P</code></td></tr></tbody></table>' },
+            { kw: '触摸,摇杆,双指,小地图', tag: '触屏', cls: 'tag-ctrl', html: '<ul><li>左侧虚拟摇杆：移动并控制炮塔朝向。</li><li>战场或<strong>小地图快双点</strong>：寻路、冲敌、穿林。</li><li>轻点敌人：锁定。</li><li>右侧：<code>☢⚡💨</code> 三个技能按钮 + 普攻火控。</li></ul>' }
+          ]
+        },
+        skills: {
+          title: '技能系统',
+          cards: [
+            { kw: '冲锋,突进,冷却,20秒,6秒,10秒', tag: '冲锋', cls: 'tag-skill', html: '<p><strong>冲锋（第 4 个技能位）</strong>：每 <strong>20</strong> 秒可发动一次，沿炮塔朝向前突进，持续约 <strong>6～10</strong> 秒；<strong>突进期间冷却计时暂停</strong>，结束后才继续走 CD。</p>' },
+            { kw: '核弹,持续伤害,灼烧', tag: '核弹', cls: 'tag-skill', html: '<p><strong>核弹</strong>：在大范围内造成持续的区域伤害（DoT），对普通敌兵与 BOSS 均有效。</p>' },
+            { kw: '闪电,雷击,全图', tag: '闪电', cls: 'tag-skill', html: '<p><strong>闪电风暴</strong>：在可见战场上召唤密集雷击，清场压力大时用于爆发输出。</p>' },
+            { kw: '烟雾,隐蔽,隐身', tag: '烟雾', cls: 'tag-skill', html: '<p><strong>烟雾</strong>：生成烟幕，使敌方难以瞄准，便于撤退、调整位置或配合回血。</p>' },
+            { kw: '折叠,界面', tag: '界面', cls: 'tag-skill', html: '<p>可用技能面板的展开/收起控制右侧按键占地，避免遮挡视野。</p>' }
+          ]
+        },
+        units: {
+          title: '单位与火力',
+          cards: [
+            { kw: '玩家,绿色,回血,水', tag: '玩家', cls: 'tag-unit', html: '<p><strong>玩家坦克</strong>（绿色主战坦克）：炮弹可摧毁树林与山体；靠水边可缓慢回复；掩体且未被锁定时可逐渐回复。歼敌提升火力档（共 10 档）。</p>' },
+            { kw: '小兵,棕色', tag: '敌军', cls: 'tag-unit', html: '<p><strong>敌军小兵</strong>：棕色坦克，巡逻追击并射击；击毁获得分数并推进 BOSS 召唤进度。</p>' },
+            { kw: '精英,金色', tag: '精英', cls: 'tag-unit', html: '<p><strong>精英</strong>：金色炮塔单位，速度与火力大约为小兵两倍，近距会寻路压迫。</p>' },
+            { kw: 'BOSS,红色', tag: 'BOSS', cls: 'tag-unit', html: '<p><strong>BOSS</strong>：巨型红色头目，极高耐久与输出，可召小兵并在低血量狂暴。</p>' },
+            { kw: '补命,道具', tag: '道具', cls: 'tag-unit', html: '<p><strong>补命道具</strong>：绿色 +1 坦克；每条命都计入向「6 命进关」推进。</p>' },
+            { kw: '火力,武器,档位,连发', tag: '火力表', cls: 'tag-unit', html: '<p>10 档武器（由低到高）：单发、强化单发、双发、强化双发、三发、强化三发、四发、强化四发、五发、强化五发。达到最高档后歼敌数仍会记录里程碑。</p>' }
+          ]
+        },
+        map: {
+          title: '地图机制',
+          cards: [
+            { kw: '地形,树林,岩石,破坏', tag: '环境', cls: 'tag-map', html: '<p>沙漠中分布树林、山体、湖泊/河流等。炮弹可打碎部分植被与岩石打开通路；水体附近提供回复加成。</p>' },
+            { kw: '小地图,导航', tag: '导航', cls: 'tag-map', html: '<p>小地图支持<strong>双击快导航</strong>：迅速设点自动寻路，适合穿越复杂障碍或追击 BOSS。</p>' }
+          ]
+        },
+        meta: {
+          title: '排行榜与语言',
+          cards: [
+            { kw: 'Game Center,排行榜,成绩', tag: 'Game Center', cls: 'tag-meta', html: '<p>在支持的平台上可通过 Game Center 查看<strong>排行榜</strong>，与好友或全球玩家比较通关与得分表现（以游戏内实际入口为准）。</p>' },
+            { kw: '语言,中文,英语', tag: '语言', cls: 'tag-meta', html: '<p>游戏内内置 <strong>6</strong> 种界面语言：中文、English、日本語、한국어、العربية、Español。可在暂停菜单随时切换；本页亦提供同款六种译文。</p>' }
+          ]
+        }
+      },
+      footerLines: ['沙漠坦克大战 · 非实时数据以客户端版本为准。', '祝你在沙场上火力全开。']
+    },
+    en: {
+      htmlLang: 'en', dir: 'ltr',
+      badge: 'Desert Tank Battle · Guide',
+      hdrTitle: 'Desert Tank Battle',
+      hdrSub: 'Quick reference: 10-stage campaign, weapon progression, four skills, desert rules.',
+      searchPh: 'Search the guide (filters cards)…',
+      resultFmt: function (n, t) { return n + ' / ' + t; },
+      noResults: 'No cards match. Try a different word.',
+      nav: { overview: 'Overview', campaign: 'Campaign', controls: 'Controls', skills: 'Skills', units: 'Units', map: 'Map', meta: 'Meta' },
+      facts: [
+        { n: '10', l: 'stages' },
+        { n: '6', l: 'lives to advance' },
+        { n: '10', l: 'weapon tiers' },
+        { n: '4', l: 'skills incl. charge' },
+        { n: 'BOSS', l: 'raid boss' },
+        { n: '6', l: 'in-game languages' }
+      ],
+      sections: {
+        overview: {
+          title: 'Overview',
+          cards: [
+            { kw: 'desert,tank,victory,stage,lives,weapon,leaderboard', tag: 'Overview', cls: 'tag-meta', html: '<p><strong>Desert Tank Battle</strong> is a top-down desert shooter: drive a green MBT, destroy enemies, upgrade firepower, and meet the stage-10 win condition.</p><ul><li><strong>10</strong> stages. Collect <strong>6</strong> lives to unlock the next stage; on stage <strong>10</strong>, fill 6 lives again to win.</li><li><strong>10</strong> weapon tiers from kills (single shot up to boosted penta).</li><li>Features a huge <strong>BOSS</strong>, touch + keyboard controls, and Game Center leaderboards where available.</li></ul>' },
+            { kw: 'HUD,score,pause', tag: 'HUD', cls: 'tag-meta', html: '<p>The top HUD shows HP, stage progress, lives, weapon name, range, and lock state. Pause opens audio and language options.</p>' }
+          ]
+        },
+        campaign: {
+          title: 'Campaign',
+          cards: [
+            { kw: 'stage,terrain,spawn,pressure', tag: 'Flow', cls: 'tag-campaign', html: '<p>The campaign has <strong>10</strong> stages. Each new stage has less terrain and faster enemy/BOSS pressure (about <strong>+10%</strong> per stage).</p>' },
+            { kw: 'lives,pickup,six', tag: 'Lives', cls: 'tag-campaign', html: '<p>Green <strong>+1 life</strong> pickups add a life. You need <strong>6</strong> lives banked to advance; on stage <strong>10</strong>, reaching 6 lives again clears the game.</p>' },
+            { kw: 'BOSS,chest,rage', tag: 'BOSS', cls: 'tag-campaign', html: '<p>Kill progress summons a massive red <strong>BOSS</strong>: very high HP, heavy fire, minion spawns, and <strong>rage</strong> at low HP. Destroying it yields a big score and skill chests.</p>' }
+          ]
+        },
+        controls: {
+          title: 'Controls',
+          cards: [
+            { kw: 'keyboard,WASD,mouse,space,pause,lock', tag: 'Keyboard', cls: 'tag-ctrl', html: '<table class="ctrl"><thead><tr><th>Action</th><th>Input</th></tr></thead><tbody><tr><td>Move</td><td><code>WASD</code> / arrows</td></tr><tr><td>Aim & fire</td><td>Mouse aim · click or <code>Space</code></td></tr><tr><td>Auto-drive</td><td>Double-tap battlefield or minimap</td></tr><tr><td>Skills</td><td><code>1</code> nuke · <code>2</code> lightning · <code>3</code> smoke</td></tr><tr><td>Lock</td><td>Click enemy · <code>Tab</code></td></tr><tr><td>Pause</td><td><code>P</code></td></tr></tbody></table>' },
+            { kw: 'touch,stick,minimap', tag: 'Touch', cls: 'tag-ctrl', html: '<ul><li>Left stick: move and aim turret.</li><li><strong>Double-tap</strong> battlefield or minimap for pathing and pushes.</li><li>Tap an enemy to lock.</li><li>Right side: <code>☢⚡💨</code> skills + main fire.</li></ul>' }
+          ]
+        },
+        skills: {
+          title: 'Skills',
+          cards: [
+            { kw: 'charge,dash,cooldown,20s,6s,10s', tag: 'Charge', cls: 'tag-skill', html: '<p><strong>Charge</strong> (fourth skill): ready every <strong>20</strong> seconds; dash forward ~<strong>6–10</strong> seconds along turret facing. While dashing, the <strong>cooldown timer pauses</strong>; it resumes after the dash ends.</p>' },
+            { kw: 'nuke,DoT,burn', tag: 'Nuke', cls: 'tag-skill', html: '<p><strong>Nuke</strong>: large area damage-over-time, effective on squads and the BOSS.</p>' },
+            { kw: 'lightning,storm,map', tag: 'Lightning', cls: 'tag-skill', html: '<p><strong>Lightning storm</strong>: dense strikes across the visible map for burst clear.</p>' },
+            { kw: 'smoke,stealth,aim', tag: 'Smoke', cls: 'tag-skill', html: '<p><strong>Smoke</strong>: impairs enemy aim so you can reposition or heal safely.</p>' },
+            { kw: 'UI,fold', tag: 'UI', cls: 'tag-skill', html: '<p>Fold/unfold the skill strip to save screen space.</p>' }
+          ]
+        },
+        units: {
+          title: 'Units & weapons',
+          cards: [
+            { kw: 'player,green,heal,water', tag: 'Player', cls: 'tag-unit', html: '<p><strong>Player tank</strong>: shells break forest and rock; healing is faster near water and in cover when not targeted. Kills raise weapon tier (10 tiers).</p>' },
+            { kw: 'minion,brown', tag: 'Minion', cls: 'tag-unit', html: '<p><strong>Minions</strong>: brown tanks that patrol and shoot; score and BOSS progress on kill.</p>' },
+            { kw: 'elite,gold', tag: 'Elite', cls: 'tag-unit', html: '<p><strong>Elite</strong>: gold turret unit with ~2× minion speed and fire; pathfinds when close.</p>' },
+            { kw: 'BOSS,red', tag: 'BOSS', cls: 'tag-unit', html: '<p><strong>BOSS</strong>: huge red raid boss with summons and enrage.</p>' },
+            { kw: 'life,pickup', tag: 'Pickup', cls: 'tag-unit', html: '<p><strong>Life pickup</strong>: green +1 tank; each life counts toward the 6-life gate.</p>' },
+            { kw: 'weapon,tier,list', tag: 'Weapons', cls: 'tag-unit', html: '<p><strong>10 tiers</strong>: Single, Boost single, Twin, Boost twin, Triple, Boost triple, Quad, Boost quad, Penta, Boost penta. Kills past max tier still track milestones.</p>' }
+          ]
+        },
+        map: {
+          title: 'Map',
+          cards: [
+            { kw: 'terrain,forest,rock,water', tag: 'Terrain', cls: 'tag-map', html: '<p>Desert arenas mix trees, rocks, and water. Shooting opens paths; water tiles boost regeneration.</p>' },
+            { kw: 'minimap,path', tag: 'Routing', cls: 'tag-map', html: '<p><strong>Double-tap</strong> the minimap (or field) to set quick auto-pathing through obstacles.</p>' }
+          ]
+        },
+        meta: {
+          title: 'Leaderboard & languages',
+          cards: [
+            { kw: 'Game Center,leaderboard', tag: 'Game Center', cls: 'tag-meta', html: '<p>On supported builds, open <strong>Game Center</strong> leaderboards from the HUD/ pause flow to compare scores (exact UI may vary by version).</p>' },
+            { kw: 'language,locale,i18n', tag: 'Languages', cls: 'tag-meta', html: '<p>The game ships <strong>6</strong> UI languages: Chinese, English, Japanese, Korean, Arabic, Spanish — switch anytime in the pause menu. This guide mirrors those six.</p>' }
+          ]
+        }
+      },
+      footerLines: ['Desert Tank Battle · values follow the client build you run.', 'Good luck on the sand.']
+    },
+    ja: {
+      htmlLang: 'ja', dir: 'ltr',
+      badge: '砂漠戦車バトル · ガイド',
+      hdrTitle: 'Desert Tank Battle',
+      hdrSub: '10 ステージ、火力 10 段階、スキル 4 種（突進含む）、砂漠ルールの要約。',
+      searchPh: 'ガイドを検索（カード絞り込み）…',
+      resultFmt: function (n, t) { return n + ' / ' + t; },
+      noResults: '一致するカードがありません。',
+      nav: { overview: '概要', campaign: 'キャンペーン', controls: '操作', skills: 'スキル', units: 'ユニット', map: 'マップ', meta: 'その他' },
+      facts: [
+        { n: '10', l: 'ステージ' },
+        { n: '6', l: '命で次へ' },
+        { n: '10', l: '火力段階' },
+        { n: '4', l: 'スキル' },
+        { n: 'BOSS', l: '大型ボス' },
+        { n: '6', l: '表示言語' }
+      ],
+      sections: {
+        overview: {
+          title: '概要',
+          cards: [
+            { kw: '砂漠,戦車,勝利,ステージ', tag: '概要', cls: 'tag-meta', html: '<p>トップダウンの砂漠戦場シューター。緑の戦車を操作し敵を撃破、火力を伸ばし、第 10 ステージの条件で勝利。</p><ul><li>全 <strong>10</strong> ステージ。<strong>6</strong> 命たまったら次ステージへ。第 <strong>10</strong> ステージでも再び 6 命でクリア。</li><li>撃破で火力が最大 <strong>10</strong> 段階まで成長。</li><li>巨大 <strong>BOSS</strong>、タッチ+キーボード、Game Center ランキング（対応端末）。</li></ul>' },
+            { kw: 'HUD,スコア', tag: 'HUD', cls: 'tag-meta', html: '<p>画面上部に HP・関進行・命・武器名・射程・ロック等を表示。停止メニューで言語・音量。</p>' }
+          ]
+        },
+        campaign: {
+          title: 'キャンペーン',
+          cards: [
+            { kw: 'ステージ,地形,スポーン', tag: '進行', cls: 'tag-campaign', html: '<p><strong>10</strong> ステージ。進むほど地形が減り敵/BOSS の展開が速くなる（およそ関ごと +10%）。</p>' },
+            { kw: '命,回復,六', tag: 'ライフ', cls: 'tag-campaign', html: '<p>緑の +1 で命が増える。<strong>6</strong> 命で次の関へ。第 <strong>10</strong> 関でも 6 命でエンディング。</p>' },
+            { kw: 'BOSS,宝箱', tag: 'BOSS', cls: 'tag-campaign', html: '<p>撃破数で巨大赤 <strong>BOSS</strong> が出現。高体力・重火力・小兵召喚・低 HP で狂暴。撃破で高得点とスキル宝箱。</p>' }
+          ]
+        },
+        controls: {
+          title: '操作',
+          cards: [
+            { kw: 'キーボード,WASD,マウス', tag: 'キーボード', cls: 'tag-ctrl', html: '<table class="ctrl"><thead><tr><th>動作</th><th>入力</th></tr></thead><tbody><tr><td>移動</td><td><code>WASD</code> / 矢印</td></tr><tr><td>照準・射撃</td><td>マウス · クリック/<code>Space</code></td></tr><tr><td>自動移動</td><td>戦場やミニマップをダブルタップ</td></tr><tr><td>スキル</td><td><code>1</code> 核 <code>2</code> 雷 <code>3</code> 煙</td></tr><tr><td>ロック</td><td>敵タブ / <code>Tab</code></td></tr><tr><td>一時停止</td><td><code>P</code></td></tr></tbody></table>' },
+            { kw: 'タッチ,スティック', tag: 'タッチ', cls: 'tag-ctrl', html: '<ul><li>左スティックで移動と照準。</li><li>戦場/ミニマップ<strong>二回タップ</strong>で経路移動。</li><li>敵タップでロック。</li><li>右：<code>☢⚡💨</code> + メイン砲。</li></ul>' }
+          ]
+        },
+        skills: {
+          title: 'スキル',
+          cards: [
+            { kw: 'チャージ,突進,クールダウン,20秒', tag: 'チャージ', cls: 'tag-skill', html: '<p><strong>チャージ</strong>：約 <strong>20</strong> 秒ごとに使用可。砲身方向へ <strong>6～10</strong> 秒突進。<strong>突進中は CD 進行が停止</strong>し、終了後に再カウント。</p>' },
+            { kw: '核,継続', tag: '核', cls: 'tag-skill', html: '<p><strong>核</strong>：広範囲の継続ダメージ（DoT）。</p>' },
+            { kw: '雷,嵐', tag: '雷', cls: 'tag-skill', html: '<p><strong>雷嵐</strong>：広域に雷撃を密集させ一掃。</p>' },
+            { kw: '煙,隠密', tag: '煙', cls: 'tag-skill', html: '<p><strong>煙幕</strong>：敵の照準を狂わせ撤退や回復に。</p>' },
+            { kw: '折りたたみ', tag: 'UI', cls: 'tag-skill', html: '<p>スキル列の折りたたみで画面占有を削減。</p>' }
+          ]
+        },
+        units: {
+          title: 'ユニット・火力',
+          cards: [
+            { kw: 'プレイヤー,緑,水', tag: '自機', cls: 'tag-unit', html: '<p><strong>自機</strong>：砲弾で森や岩を破壊。水辺・掩蔽で回復。撃破で火力 UP（最大 10 段階）。</p>' },
+            { kw: '小兵', tag: '敵', cls: 'tag-unit', html: '<p><strong>小兵</strong>：茶色戦車。撃破でスコアと BOSS 進行。</p>' },
+            { kw: 'エリート', tag: 'エリート', cls: 'tag-unit', html: '<p><strong>エリート</strong>：金色、約 2 倍の機動と火力。</p>' },
+            { kw: 'BOSS', tag: 'BOSS', cls: 'tag-unit', html: '<p><strong>BOSS</strong>：巨大赤ボス、召喚と狂暴。</p>' },
+            { kw: '+1,ライフ', tag: 'アイテム', cls: 'tag-unit', html: '<p><strong>回復</strong>：緑 +1。6 命ゲートにすべてカウント。</p>' },
+            { kw: '武器リスト', tag: '火力', cls: 'tag-unit', html: '<p>10 段階：単発→強五連まで（一覧は英語版参照）。満階後も撃破数は記録。</p>' }
+          ]
+        },
+        map: {
+          title: 'マップ',
+          cards: [
+            { kw: '地形,水,林', tag: '環境', cls: 'tag-map', html: '<p>砂漠に林・岩・水。射撃で通路を開く。水付近は回復に有利。</p>' },
+            { kw: 'ミニマップ', tag: '経路', cls: 'tag-map', html: '<p>ミニマップ<strong>ダブルタップ</strong>でオート経路を素早く設定。</p>' }
+          ]
+        },
+        meta: {
+          title: 'ランキング・言語',
+          cards: [
+            { kw: 'Game Center', tag: 'GC', cls: 'tag-meta', html: '<p>対応環境では Game Center の<strong>ランキング</strong>からスコア比較（UI はビルドにより異なる場合あり）。</p>' },
+            { kw: '言語,6', tag: '言語', cls: 'tag-meta', html: '<p>ゲーム内 <strong>6</strong> 言語。一時停止から切替可能。</p>' }
+          ]
+        }
+      },
+      footerLines: ['砂漠戦車バトル · 数値はクライアント版に準拠。', '健闘を祈る。']
+    },
+    ko: {
+      htmlLang: 'ko', dir: 'ltr',
+      badge: '사막 전차 대전 · 가이드',
+      hdrTitle: 'Desert Tank Battle',
+      hdrSub: '10 스테이지, 화력 10단계, 스킬 4종(돌진 포함), 사막 규칙 요약.',
+      searchPh: '가이드 검색(카드 필터)…',
+      resultFmt: function (n, t) { return n + ' / ' + t; },
+      noResults: '일치하는 카드가 없습니다.',
+      nav: { overview: '개요', campaign: '캠페인', controls: '조작', skills: '스킬', units: '유닛', map: '맵', meta: '기타' },
+      facts: [
+        { n: '10', l: '스테이지' },
+        { n: '6', l: '목숨으로 진행' },
+        { n: '10', l: '화력 단계' },
+        { n: '4', l: '스킬' },
+        { n: 'BOSS', l: '보스' },
+        { n: '6', l: '게임 언어' }
+      ],
+      sections: {
+        overview: {
+          title: '개요',
+          cards: [
+            { kw: '사막,전차,승리', tag: '개요', cls: 'tag-meta', html: '<p>탑다운 사막 슈팅: 녹색 전차로 적 격파, 화력 성장, 10 스테이지 조건으로 승리.</p><ul><li>총 <strong>10</strong> 스테이지. <strong>6</strong> 목숨을 모으면 다음으로. 제 <strong>10</strong> 스테이지에서 다시 6 목숨으로 클리어.</li><li>격파로 화력 <strong>10</strong> 단계.</li><li>대형 <strong>BOSS</strong>, 터치+키보드, Game Center 랭킹(지원 기기).</li></ul>' },
+            { kw: 'HUD,점수', tag: 'HUD', cls: 'tag-meta', html: '<p>상단 HUD: HP, 진행, 목숨, 무기, 사거리, 고정 등. 일시정지에서 언어·음향.</p>' }
+          ]
+        },
+        campaign: {
+          title: '캠페인',
+          cards: [
+            { kw: '스테이지,지형', tag: '진행', cls: 'tag-campaign', html: '<p><strong>10</strong> 스테이지. 갈수록 지형 감소·적·BOSS 압박 증가(약 스테이지당 +10%).</p>' },
+            { kw: '목숨,회복', tag: '목숨', cls: 'tag-campaign', html: '<p>초록 +1 로 목숨 증가. <strong>6</strong> 목숨이면 다음 스테이지. 10 스테이지에서 6 목숨으로 승리.</p>' },
+            { kw: 'BOSS,광폭', tag: 'BOSS', cls: 'tag-campaign', html: '<p>격파 수에 따라 거대 붉은 <strong>BOSS</strong>. HP·화력·소환·저HP 광폭. 격파 시 고점수·스킬 상자.</p>' }
+          ]
+        },
+        controls: {
+          title: '조작',
+          cards: [
+            { kw: '키보드,WASD', tag: '키보드', cls: 'tag-ctrl', html: '<table class="ctrl"><thead><tr><th>동작</th><th>입력</th></tr></thead><tbody><tr><td>이동</td><td><code>WASD</code> / 방향키</td></tr><tr><td>조준·사격</td><td>마우스 · 클릭/<code>Space</code></td></tr><tr><td>자동 이동</td><td>전장/미니맵 더블탭</td></tr><tr><td>스킬</td><td><code>1</code> 핵 <code>2</code> 번개 <code>3</code> 연막</td></tr><tr><td>고정</td><td>적 탭 · <code>Tab</code></td></tr><tr><td>일시정지</td><td><code>P</code></td></tr></tbody></table>' },
+            { kw: '터치,스틱', tag: '터치', cls: 'tag-ctrl', html: '<ul><li>왼쪽 스틱: 이동+조준.</li><li>전장/미니맵 <strong>더블탭</strong> 경로.</li><li>적 탭 잠금.</li><li>오른쪽: <code>☢⚡💨</code> + 일반 사격.</li></ul>' }
+          ]
+        },
+        skills: {
+          title: '스킬',
+          cards: [
+            { kw: '돌진,쿨다운,20초', tag: '돌진', cls: 'tag-skill', html: '<p><strong>돌진</strong>: 약 <strong>20</strong>초마다 사용. 포신 방향으로 <strong>6～10</strong>초 돌진. <strong>돌진 중 재사용 대기가 멈춤</strong>, 종료 후 이어짐.</p>' },
+            { kw: '핵', tag: '핵', cls: 'tag-skill', html: '<p><strong>핵</strong>: 광역 지속 피해.</p>' },
+            { kw: '번개', tag: '번개', cls: 'tag-skill', html: '<p><strong>번개 폭풍</strong>: 넓게 타격.</p>' },
+            { kw: '연막', tag: '연막', cls: 'tag-skill', html: '<p><strong>연막</strong>: 적 조준 방해, 후퇴·회복에 유리.</p>' },
+            { kw: '접기', tag: 'UI', cls: 'tag-skill', html: '<p>스킬 패널 접어 화면 점유 축소.</p>' }
+          ]
+        },
+        units: {
+          title: '유닛·화력',
+          cards: [
+            { kw: '플레이어,물', tag: '플레이어', cls: 'tag-unit', html: '<p><strong>플레이어</strong>: 포탄으로 수목·암석 파괴. 물·엄폐에서 회복. 격파로 화력 상승(10단계).</p>' },
+            { kw: '보병', tag: '적', cls: 'tag-unit', html: '<p><strong>적 보병</strong>: 갈색 전차. 격파 시 점수·BOSS 진행.</p>' },
+            { kw: '엘리트', tag: '엘리트', cls: 'tag-unit', html: '<p><strong>엘리트</strong>: 금색, 약 2배 기동·화력.</p>' },
+            { kw: 'BOSS', tag: 'BOSS', cls: 'tag-unit', html: '<p><strong>BOSS</strong>: 거대 붉은 보스, 소환·광폭.</p>' },
+            { kw: '+1', tag: '아이템', cls: 'tag-unit', html: '<p><strong>+1 목숨</strong>: 초록 탱크. 6 목숨 조건에 합산.</p>' },
+            { kw: '무기', tag: '화력표', cls: 'tag-unit', html: '<p>10단계 무기(단발~강화 5연사). 최대 단계 이후에도 격파 수 기록.</p>' }
+          ]
+        },
+        map: {
+          title: '맵',
+          cards: [
+            { kw: '지형,물', tag: '환경', cls: 'tag-map', html: '<p>사막에 숲·바위·물. 사격으로 길 개척. 물 근처 회복 유리.</p>' },
+            { kw: '미니맵', tag: '길찾기', cls: 'tag-map', html: '<p>미니맵 <strong>더블탭</strong>으로 빠른 자동 경로.</p>' }
+          ]
+        },
+        meta: {
+          title: '순위·언어',
+          cards: [
+            { kw: 'Game Center', tag: 'GC', cls: 'tag-meta', html: '<p>지원 빌드에서 Game Center <strong>순위표</strong>로 비교(UI는 버전별 상이).</p>' },
+            { kw: '언어,6', tag: '언어', cls: 'tag-meta', html: '<p>게임 내 <strong>6</strong>개 언어. 일시정지에서 전환.</p>' }
+          ]
+        }
+      },
+      footerLines: ['사막 전차 대전 · 수치는 설치된 클라이언트 기준.', '행운을 빕니다.']
+    },
+    ar: {
+      htmlLang: 'ar', dir: 'rtl',
+      badge: 'دبابة الصحراء · دليل',
+      hdrTitle: 'Desert Tank Battle',
+      hdrSub: 'ملخص: 10 مراحل، 10 مستويات نار، 4 مهارات (مع الشحن)، قواعد الصحراء.',
+      searchPh: 'البحث في الدليل (تصفية البطاقات)…',
+      resultFmt: function (n, t) { return n + ' / ' + t; },
+      noResults: 'لا توجد بطاقات مطابقة.',
+      nav: { overview: 'نظرة', campaign: 'الحملة', controls: 'التحكم', skills: 'المهارات', units: 'الوحدات', map: 'الخريطة', meta: 'أخرى' },
+      facts: [
+        { n: '10', l: 'مراحل' },
+        { n: '6', l: 'أرواح للتقدم' },
+        { n: '10', l: 'درجات سلاح' },
+        { n: '4', l: 'مهارات' },
+        { n: 'BOSS', l: 'زعيم' },
+        { n: '6', l: 'لغات في اللعبة' }
+      ],
+      sections: {
+        overview: {
+          title: 'نظرة عامة',
+          cards: [
+            { kw: 'صحراء,دبابة,فوز', tag: 'عام', cls: 'tag-meta', html: '<p>لعبة تصويب علوية في الصحراء: قود الدبابة الخضراء، دمّر الأعداء، طور النار، وأكمل شرط المرحلة 10.</p><ul><li><strong>10</strong> مراحل. اجمع <strong>6</strong> أرواح لفتح المرحلة التالية؛ في المرحلة <strong>10</strong> اجمع 6 مجدداً للفوز.</li><li><strong>10</strong> درجات سلاح بالقتل.</li><li><strong>BOSS</strong> ضخم، تحكم لمس + لوحة مفاتيح، لوائح Game Center حيث يتوفر.</li></ul>' },
+            { kw: 'HUD,نقاط', tag: 'واجهة', cls: 'tag-meta', html: '<p>شريط علوي: الصحة، التقدم، الأرواح، السلاح، المدى، القفل. الإيقاف المؤقت للغة والصوت.</p>' }
+          ]
+        },
+        campaign: {
+          title: 'الحملة',
+          cards: [
+            { kw: 'مرحلة,تضاريس', tag: 'التدفق', cls: 'tag-campaign', html: '<p><strong>10</strong> مراحل. تقل التضاريس وتزداد سرعة العدو/الزعيم تدريجياً (~+10% لكل مرحلة).</p>' },
+            { kw: 'أرواح,التقاط', tag: 'الأرواح', cls: 'tag-campaign', html: '<p>التقاط أخضر <strong>+1</strong>. تحتاج <strong>6</strong> أرواح للتقدم؛ في 10 اجمع 6 للنصر النهائي.</p>' },
+            { kw: 'BOSS,غضب', tag: 'BOSS', cls: 'tag-campaign', html: '<p>تقدم القتال يستدعي <strong>BOSS</strong> أحمر ضخماً: دم عالٍ، نيران ثقيلة، استدعاء وزيادة عنف عند انخفاض الصحة.</p>' }
+          ]
+        },
+        controls: {
+          title: 'التحكم',
+          cards: [
+            { kw: 'لوحة,WASD,فأرة', tag: 'لوحة', cls: 'tag-ctrl', html: '<table class="ctrl"><thead><tr><th>فعل</th><th>زرت</th></tr></thead><tbody><tr><td>تحرك</td><td><code>WASD</code> / أسهم</td></tr><tr><td>تصويب وإطلاق</td><td>فأرة · نقر أو <code>Space</code></td></tr><tr><td>قيادة تلقائية</td><td>نقر مزدوج ميدان أو خريطة مصغرة</td></tr><tr><td>مهارات</td><td><code>1</code> نووي <code>2</code> برق <code>3</code> دخان</td></tr><tr><td>قفل</td><td>نقر عدو · <code>Tab</code></td></tr><tr><td>إيقاف</td><td><code>P</code></td></tr></tbody></table>' },
+            { kw: 'لمس,عصا', tag: 'لمس', cls: 'tag-ctrl', html: '<ul><li>عصا يسار: الحركة والتصويب.</li><li><strong>نقر مزدوج</strong> للميدان أو الخريطة المصغرة.</li><li>نقر العدو للقفل.</li><li>يمين: <code>☢⚡💨</code> + النار الرئيسية.</li></ul>' }
+          ]
+        },
+        skills: {
+          title: 'المهارات',
+          cards: [
+            { kw: 'شحن,اندفاع,20,تبريد', tag: 'شحن', cls: 'tag-skill', html: '<p><strong>الشحن</strong>: كل ~<strong>20</strong> ثانية؛ اندفاع <strong>6–10</strong> ثوانٍ باتجاه الفوهة. <strong>العداد يتوقف أثناء الاندفاع</strong> ثم يكمل بعدها.</p>' },
+            { kw: 'نووي,ضرر', tag: 'نووي', cls: 'tag-skill', html: '<p><strong>نووي</strong>: ضرر منطقة مستمر بمرور الوقت.</p>' },
+            { kw: 'برق,عاصفة', tag: 'برق', cls: 'tag-skill', html: '<p><strong>عاصفة برق</strong>: ضربات كثيفة لمساحة واسعة.</p>' },
+            { kw: 'دخان,تخفي', tag: 'دخان', cls: 'tag-skill', html: '<p><strong>دخان</strong>: يعطّل تصويب الأعداء للانسحاب أو التعافي.</p>' },
+            { kw: 'طي', tag: 'واجهة', cls: 'tag-skill', html: '<p>طي شريط المهارات لتوفير مساحة الشاشة.</p>' }
+          ]
+        },
+        units: {
+          title: 'الوحدات والسلاح',
+          cards: [
+            { kw: 'لاعب,ماء', tag: 'لاعب', cls: 'tag-unit', html: '<p><strong>دبابة اللاعب</strong>: قذائف تكسر الأشجار والصخور؛ شفاء قرب الماء وفي الغطاء. القتل يرفع مستوى النار (10 درجات).</p>' },
+            { kw: 'جندي', tag: 'عدو', cls: 'tag-unit', html: '<p><strong>جندي</strong>: دبابة بنية؛ تدميرها يمنح نقاطاً وتقدماً نحو الزعيم.</p>' },
+            { kw: 'نخبة', tag: 'نخبة', cls: 'tag-unit', html: '<p><strong>نخبة</strong>: برج ذهبي بضعف تقريبي للسرعة والنار.</p>' },
+            { kw: 'BOSS', tag: 'BOSS', cls: 'tag-unit', html: '<p><strong>BOSS</strong>: عملاق أحمر مع استدعاءات وغضب.</p>' },
+            { kw: 'حياة', tag: 'التقاط', cls: 'tag-unit', html: '<p><strong>+1 حياة</strong>: دبابة خضراء؛ تُحسب نحو شرط الـ 6 أرواح.</p>' },
+            { kw: 'سلاح,درجات', tag: 'النار', cls: 'tag-unit', html: '<p><strong>10 درجات</strong> من الأسماء في باقة اللعبة؛ بعد أقصى درجة يستمر عدّ القتل.</p>' }
+          ]
+        },
+        map: {
+          title: 'الخريطة',
+          cards: [
+            { kw: 'تضاريس,ماء,غابة', tag: 'بيئة', cls: 'tag-map', html: '<p>صحراء فيها أشجار وصخور وماء. إطلاق النار يفتح مسارات؛ الماء يساعد التعافي.</p>' },
+            { kw: 'خريطة مصغرة', tag: 'مسار', cls: 'tag-map', html: '<p><strong>نقر مزدوج</strong> على الخريطة المصغرة لمسار تلقائي سريع.</p>' }
+          ]
+        },
+        meta: {
+          title: 'الترتيب واللغات',
+          cards: [
+            { kw: 'Game Center', tag: 'GC', cls: 'tag-meta', html: '<p>في الإصدارات الداعمة، <strong>Game Center</strong> للمقارنة على لوائح النقاط.</p>' },
+            { kw: 'لغة,6', tag: 'لغات', cls: 'tag-meta', html: '<p>اللعبة تقدم <strong>6</strong> لغات واجهة؛ تبديل من الإيقاف المؤقت. هذا الدليل يطابقها.</p>' }
+          ]
+        }
+      },
+      footerLines: ['دبابة الصحراء · القيم تتبع نسخة العميل.', 'حظاً موفقاً.']
+    },
+    es: {
+      htmlLang: 'es', dir: 'ltr',
+      badge: 'Desert Tank Battle · Guía',
+      hdrTitle: 'Desert Tank Battle',
+      hdrSub: 'Resumen: 10 fases, 10 niveles de arma, 4 habilidades (con carga), reglas del mapa.',
+      searchPh: 'Buscar en la guía (filtra tarjetas)…',
+      resultFmt: function (n, t) { return n + ' / ' + t; },
+      noResults: 'Ninguna tarjeta coincide.',
+      nav: { overview: 'Resumen', campaign: 'Campaña', controls: 'Controles', skills: 'Habilidades', units: 'Unidades', map: 'Mapa', meta: 'Extra' },
+      facts: [
+        { n: '10', l: 'fases' },
+        { n: '6', l: 'vidas para avanzar' },
+        { n: '10', l: 'niveles de arma' },
+        { n: '4', l: 'habilidades' },
+        { n: 'BOSS', l: 'jefe' },
+        { n: '6', l: 'idiomas en juego' }
+      ],
+      sections: {
+        overview: {
+          title: 'Resumen',
+          cards: [
+            { kw: 'desierto,tanque,victoria', tag: 'General', cls: 'tag-meta', html: '<p>Shooter cenital en el desierto: conduce el tanque verde, destruye enemigos, sube el arma y cumple la victoria en la fase 10.</p><ul><li><strong>10</strong> fases. Necesitas <strong>6</strong> vidas para pasar; en la fase <strong>10</strong> vuelve a reunir 6 para ganar.</li><li><strong>10</strong> niveles de arma por bajas.</li><li><strong>BOSS</strong> enorme, controles táctil + teclado, tablas Game Center si aplica.</li></ul>' },
+            { kw: 'HUD,puntos', tag: 'HUD', cls: 'tag-meta', html: '<p>HUD superior: salud, progreso, vidas, arma, alcance y bloqueo. Pausa para idioma y audio.</p>' }
+          ]
+        },
+        campaign: {
+          title: 'Campaña',
+          cards: [
+            { kw: 'fase,terreno', tag: 'Flujo', cls: 'tag-campaign', html: '<p><strong>10</strong> fases. Cada una reduce terreno y acelera spawns (~ +10% por fase).</p>' },
+            { kw: 'vidas,botín', tag: 'Vidas', cls: 'tag-campaign', html: '<p>Recoge <strong>+1 vida</strong> verde. Reúne <strong>6</strong> vidas para avanzar; en la 10, otras 6 para el final.</p>' },
+            { kw: 'BOSS,furia', tag: 'BOSS', cls: 'tag-campaign', html: '<p>El progreso de bajas invoca un <strong>BOSS</strong> rojo gigante: mucha vida, fuego duro, súbditos y furia al bajar de vida.</p>' }
+          ]
+        },
+        controls: {
+          title: 'Controles',
+          cards: [
+            { kw: 'teclado,WASD,ratón', tag: 'Teclado', cls: 'tag-ctrl', html: '<table class="ctrl"><thead><tr><th>Acción</th><th>Entrada</th></tr></thead><tbody><tr><td>Mover</td><td><code>WASD</code> / flechas</td></tr><tr><td>Apuntar y disparar</td><td>Ratón · clic o <code>Space</code></td></tr><tr><td>Autopiloto</td><td>Doble toque en mapa o campo</td></tr><tr><td>Habilidades</td><td><code>1</code> nuke <code>2</code> rayo <code>3</code> humo</td></tr><tr><td>Bloqueo</td><td>Clic en enemigo · <code>Tab</code></td></tr><tr><td>Pausa</td><td><code>P</code></td></tr></tbody></table>' },
+            { kw: 'táctil,stick', tag: 'Táctil', cls: 'tag-ctrl', html: '<ul><li>Stick izquierdo: mover y apuntar.</li><li><strong>Doble toque</strong> en minimapa o campo.</li><li>Toca enemigo para fijar.</li><li>Derecha: <code>☢⚡💨</code> + fuego principal.</li></ul>' }
+          ]
+        },
+        skills: {
+          title: 'Habilidades',
+          cards: [
+            { kw: 'carga,empuje,20s,CD', tag: 'Carga', cls: 'tag-skill', html: '<p><strong>Carga</strong>: lista cada ~<strong>20</strong> s; avanza <strong>6–10</strong> s hacia la torreta. <strong>El CD se pausa mientras avanzas</strong>.</p>' },
+            { kw: 'nuke,daño', tag: 'Nuke', cls: 'tag-skill', html: '<p><strong>Nuke</strong>: zona con daño en el tiempo.</p>' },
+            { kw: 'rayo,tormenta', tag: 'Rayo', cls: 'tag-skill', html: '<p><strong>Tormenta eléctrica</strong>: golpes amplios.</p>' },
+            { kw: 'humo,ocultar', tag: 'Humo', cls: 'tag-skill', html: '<p><strong>Humo</strong>: dificulta la puntería enemiga.</p>' },
+            { kw: 'plegar', tag: 'UI', cls: 'tag-skill', html: '<p>Plegar la barra de habilidades para liberar vista.</p>' }
+          ]
+        },
+        units: {
+          title: 'Unidades y armas',
+          cards: [
+            { kw: 'jugador,agua', tag: 'Jugador', cls: 'tag-unit', html: '<p><strong>Tanque del jugador</strong>: rompe bosque y roca; curación cerca del agua y en cobertura. Bajas suben el arma (10 niveles).</p>' },
+            { kw: 'esbirro', tag: 'Esbirro', cls: 'tag-unit', html: '<p><strong>Esbirros</strong>: tanques marrones; puntos y progreso de BOSS al destruir.</p>' },
+            { kw: 'élite', tag: 'Élite', cls: 'tag-unit', html: '<p><strong>Élite</strong>: torreta dorada ~2× stats.</p>' },
+            { kw: 'BOSS', tag: 'BOSS', cls: 'tag-unit', html: '<p><strong>BOSS</strong>: jefe rojo enorme con invocaciones.</p>' },
+            { kw: 'vida,botín', tag: 'Botín', cls: 'tag-unit', html: '<p><strong>+1 vida</strong>: tanque verde; cuenta para el umbral de 6.</p>' },
+            { kw: 'arma,niveles', tag: 'Armas', cls: 'tag-unit', html: '<p><strong>10 niveles</strong> desde disparo simple hasta quíntuple reforzado. Tras el máx siguen contándose bajas.</p>' }
+          ]
+        },
+        map: {
+          title: 'Mapa',
+          cards: [
+            { kw: 'terreno,agua', tag: 'Entorno', cls: 'tag-map', html: '<p>Desierto con árboles, rocas y agua. Disparas para abrir caminos; el agua ayuda a curar.</p>' },
+            { kw: 'minimapa,ruta', tag: 'Ruta', cls: 'tag-map', html: '<p><strong>Doble toque</strong> en minimapa para autopilotaje rápido.</p>' }
+          ]
+        },
+        meta: {
+          title: 'Clasificación e idiomas',
+          cards: [
+            { kw: 'Game Center', tag: 'GC', cls: 'tag-meta', html: '<p>En builds compatibles, <strong>Game Center</strong> muestra clasificaciones para comparar.</p>' },
+            { kw: 'idioma,6', tag: 'Idiomas', cls: 'tag-meta', html: '<p>El juego incluye <strong>6</strong> idiomas de interfaz; cambia en pausa. Esta guía replica los mismos.</p>' }
+          ]
+        }
+      },
+      footerLines: ['Desert Tank Battle · los valores siguen al cliente instalado.', 'Suerte en la arena.']
+    }
+  };
+
+  var currentLang = 'en';
+
+  function getStoredLang() {
+    try {
+      var s = localStorage.getItem(STORAGE_KEY);
+      if (s && LOCALES.indexOf(s) >= 0) return s;
+    } catch (e) {}
+    return null;
+  }
+
+  function setStoredLang(code) {
+    try { localStorage.setItem(STORAGE_KEY, code); } catch (e) {}
+  }
+
+  function applyDocumentLang(code) {
+    var P = pack[code];
+    var root = document.documentElement;
+    root.setAttribute('lang', P.htmlLang);
+    if (P.dir === 'rtl') {
+      root.setAttribute('dir', 'rtl');
+    } else {
+      root.removeAttribute('dir');
+    }
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  }
+
+  function buildLangTabs() {
+    var nav = document.getElementById('lang-tabs');
+    nav.innerHTML = '';
+    for (var i = 0; i < LOCALES.length; i++) {
+      var code = LOCALES[i];
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('data-lang', code);
+      btn.textContent = LOCALE_LABELS[code];
+      if (code === currentLang) btn.className = 'active';
+      btn.addEventListener('click', function () {
+        var c = this.getAttribute('data-lang');
+        if (c === currentLang) return;
+        currentLang = c;
+        setStoredLang(c);
+        render();
+      });
+      nav.appendChild(btn);
+    }
+  }
+
+  function renderHeader(P) {
+    document.getElementById('hdr-badge').textContent = P.badge;
+    document.getElementById('hdr-title').textContent = P.hdrTitle;
+    document.getElementById('hdr-sub').textContent = P.hdrSub;
+    document.getElementById('q').placeholder = P.searchPh;
+    document.getElementById('no-results').textContent = P.noResults;
+  }
+
+  function renderNav(P) {
+    var n = P.nav;
+    var keys = ['overview', 'campaign', 'controls', 'skills', 'units', 'map', 'meta'];
+    var html = '';
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      html += '<a href="#' + k + '">' + esc(n[k]) + '</a>';
+    }
+    document.getElementById('nav-tags').innerHTML = html;
+  }
+
+  function renderFacts(P) {
+    var el = document.getElementById('quick-facts');
+    el.innerHTML = '';
+    for (var i = 0; i < P.facts.length; i++) {
+      var f = P.facts[i];
+      var d = document.createElement('div');
+      d.className = 'fact';
+      d.innerHTML = '<strong>' + esc(f.n) + '</strong><span>' + esc(f.l) + '</span>';
+      el.appendChild(d);
+    }
+  }
+
+  function renderMainFixed(P) {
+    var order = ['overview', 'campaign', 'controls', 'skills', 'units', 'map', 'meta'];
+    var main = document.getElementById('main');
+    main.innerHTML = '';
+    for (var s = 0; s < order.length; s++) {
+      var key = order[s];
+      var sec = P.sections[key];
+      var section = document.createElement('section');
+      section.id = key;
+      var h2 = document.createElement('h2');
+      h2.textContent = sec.title;
+      section.appendChild(h2);
+      var grid = document.createElement('div');
+      grid.className = 'card-grid' + (key === 'controls' || key === 'units' ? ' cols-2' : '');
+      for (var c = 0; c < sec.cards.length; c++) {
+        var card = sec.cards[c];
+        var div = document.createElement('div');
+        div.className = 'card';
+        div.setAttribute('data-keywords', card.kw);
+        var h3 = document.createElement('h3');
+        var tagSp = document.createElement('span');
+        tagSp.className = 'tag ' + card.cls;
+        tagSp.textContent = card.tag;
+        h3.appendChild(tagSp);
+        var temp = document.createElement('div');
+        temp.innerHTML = card.html;
+        var first = temp.firstElementChild;
+        var titleSpan = document.createElement('span');
+        titleSpan.style.fontWeight = '700';
+        titleSpan.style.color = 'var(--text)';
+        if (first && first.tagName === 'P') {
+          var strong = first.querySelector('strong');
+          if (strong) titleSpan.textContent = strong.textContent;
+          else titleSpan.textContent = card.tag;
+        } else if (first && first.tagName === 'UL') {
+          titleSpan.textContent = card.tag;
+        } else if (first && first.tagName === 'TABLE') {
+          titleSpan.textContent = card.tag;
+        } else {
+          titleSpan.textContent = card.tag;
+        }
+        h3.appendChild(titleSpan);
+        div.appendChild(h3);
+        while (temp.firstChild) div.appendChild(temp.firstChild);
+        grid.appendChild(div);
+      }
+      section.appendChild(grid);
+      main.appendChild(section);
+    }
+  }
+
+  function renderFooter(P) {
+    var f = document.getElementById('footer');
+    f.innerHTML = '<p>' + esc(P.footerLines[0]) + '</p><p>' + esc(P.footerLines[1]) + '</p>';
+  }
+
+  function runSearch() {
+    var P = pack[currentLang];
+    var qel = document.getElementById('q');
+    var q = (qel.value || '').trim().toLowerCase();
+    var cards = document.querySelectorAll('.card');
+    var visible = 0;
+    var total = cards.length;
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      var kw = (card.getAttribute('data-keywords') || '').toLowerCase();
+      var txt = card.textContent.toLowerCase();
+      var ok = !q || kw.indexOf(q) >= 0 || txt.indexOf(q) >= 0;
+      card.classList.toggle('hidden-by-search', !ok);
+      card.classList.toggle('match', !!q && ok);
+      if (ok) visible++;
+    }
+    var hint = document.getElementById('result-hint');
+    hint.textContent = P.resultFmt(visible, total);
+    document.getElementById('no-results').classList.toggle('visible', q.length > 0 && visible === 0);
+  }
+
+  function render() {
+    applyDocumentLang(currentLang);
+    var P = pack[currentLang];
+    renderHeader(P);
+    renderNav(P);
+    renderFacts(P);
+    renderMainFixed(P);
+    renderFooter(P);
+    buildLangTabs();
+    var qel = document.getElementById('q');
+    qel.value = '';
+    runSearch();
+  }
+
+  currentLang = getStoredLang() || 'en';
+  document.getElementById('q').addEventListener('input', runSearch);
+  document.getElementById('q').addEventListener('search', runSearch);
+  render();
+})();
+  </script>
+</body>
+</html>
